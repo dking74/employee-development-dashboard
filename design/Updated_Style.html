@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <title>Employee Development Dashboard</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Employee Development Dashboard">
+    <meta name="keywords" content="Employee, Development, Technology, Software">
+    
+    <!-- For Bootstrap styling -->
+    <link rel="stylesheet" 
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- For Bootstrap icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
+     
+    <!-- Main Styling for site -->
+    <style type="text/css">
+        :root {
+          --primary-color: #B0E0E6;
+          --test: rgba(0, 255, 255, .2);
+          --secondary-color: #003F91;
+          --tertiary-color: #4D5382;
+          --accent-color: #2A2E45;
+          --hover-color: rgba(255, 255, 255, .1);
+        }
+        
+        .base-icon {
+            font-size: 36px;
+            color: var(--accent-color);
+        }
+        .scrim {
+            position: fixed;
+            left: 250px;
+            right: 0;
+            height: 100%;
+            background-color: rgba(0, 0, 0, .3);
+            z-index: 1000;
+        }
+        .sidebar-menu {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background-color: var(--primary-color);
+            box-shadow: 0 0 3px 1px rgba(0, 0, 0, .5); 
+        }
+        .sidebar-menu__header {
+            text-align: center;
+            width: 100%;
+            margin-top: 25px;
+        }
+        .company-logo {
+            margin: 0 20px;
+        }
+        .sidebar-menu__items {
+            margin-top: 25%;
+        }
+        .sidebar-menu__items-link {
+            display: block;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 20px;
+            padding: 5px;
+            color: #EFF9F0;
+            border-radius: 10px;
+            margin-left: 5px;
+            margin-right: 5px;
+            background-color: var(--secondary-color);
+            box-shadow: 0 0 3px;
+        }
+        .sidebar-menu__items-link:hover {
+            color: rgba(255, 255, 255, .5);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .sidebar-menu__footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 25%;
+            text-align: center;
+            border-top: 1px solid var(--tertiary-color);
+        }
+        .sidebar-menu__footer--account {
+            display: inline-block;
+            margin-bottom: 15px;
+            border-radius: 50%;
+            width: 75px;
+            height: 75px;
+        }
+        .sidebar-menu__footer--account:hover {
+            background-color: var(--hover-color);
+            cursor: pointer;
+        }
+        .sidebar-menu--link {
+            color: var(--accent-color);
+            display: block;
+        }
+        .main-content-area {
+            position: absolute;
+            left: 250px;
+            right: 0;
+            height: 100%;
+        }
+    </style>
+      
+  </head>
+  <body>
+    <div class="sidebar-menu">
+        <div class="sidebar-menu__header">
+            <img class="company-logo" alt="Company Logo" src="" width="200" height="100">
+        </div>
+        <div class="sidebar-menu__items">
+            <a href="#" class="sidebar-menu__items-link">Dashboard</a>
+            <a href="#" class="sidebar-menu__items-link">My Career<i class="bi bi-chevron-down"></i></a>
+            <a href="#" class="sidebar-menu__items-link">Events</a>
+            <a href="#" class="sidebar-menu__items-link">Learning</a>
+        </div>
+        <div class="sidebar-menu__footer">
+            <div class="sidebar-menu__footer--account">
+                <i class="bi bi-person-circle base-icon"></i>
+                <h6>Devon</h6>
+            </div>
+            <div class="sidebar-menu__footer--help">
+                <a href="#" class="sidebar-menu--link">Settings</a>
+                <a href="#" class="sidebar-menu--link">Help</a>
+            </div>
+        </div>
+    </div>
+      
+    <!-- 
+    Used to show when menu is open and in mobile/table view
+
+    <div class="scrim"></div>
+    -->
+    <div class="main-content-area">
+    </div>
+
+    <noscript>
+        The Employee Development Dashboard cannot be displayed because your browser does not support JavaScript.
+    </noscript>
+        <!-- For Bootstrap components functionality -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" 
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
