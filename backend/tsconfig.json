@@ -43,9 +43,16 @@
     // "noPropertyAccessFromIndexSignature": true,  /* Require undeclared properties from index signatures to use element accesses. */
 
     /* Module Resolution Options */
-    // "moduleResolution": "node",                  /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
-    // "baseUrl": "./",                             /* Base directory to resolve non-absolute module names. */
-    "paths": {},                                 /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
+    "moduleResolution": "node",                  /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
+    "baseUrl": "src",                             /* Base directory to resolve non-absolute module names. */
+    "paths": {
+      "src/*": ["*"],
+      "@v1-controllers/*": ["v1/controllers/*"],
+      "@v1-services/*": ["v1/services/*"],
+      "@utils/*": ["utils/*"],
+      "@http-errors": ["errors"],
+      "@types": ["types"]
+    },                                 /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
     // "rootDirs": [],                              /* List of root folders whose combined content represents the structure of the project at runtime. */
     "typeRoots": [ "node_modules/@types" ],          /* List of folders to include type definitions from. */
     "types": ["node"],                                 /* Type declaration files to be included in compilation. */
@@ -61,8 +68,8 @@
     // "inlineSources": true,                       /* Emit the source alongside the sourcemaps within a single file; requires '--inlineSourceMap' or '--sourceMap' to be set. */
 
     /* Experimental Options */
-    // "experimentalDecorators": true,              /* Enables experimental support for ES7 decorators. */
-    // "emitDecoratorMetadata": true,               /* Enables experimental support for emitting type metadata for decorators. */
+    "experimentalDecorators": true,              /* Enables experimental support for ES7 decorators. */
+    "emitDecoratorMetadata": true,               /* Enables experimental support for emitting type metadata for decorators. */
 
     /* Advanced Options */
     "skipLibCheck": true,                           /* Skip type checking of declaration files. */
@@ -70,5 +77,8 @@
   },
   "files": [
     "src/index.ts"
+  ],
+  "exclude": [
+    "**/*.spec.(ts|js)"
   ]
 }
