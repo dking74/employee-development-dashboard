@@ -20,16 +20,21 @@ COMMENT ON DATABASE "Capstone"
     IS 'Capstone Database';
 GRANT TEMPORARY, CONNECT ON DATABASE "Capstone" TO capstone_user WITH GRANT OPTION;
 
+-- Create 'UserStatus' type
+DROP TYPE IF EXISTS UserStatus CASCADE;
+CREATE TYPE UserStatus AS ENUM ('active', 'inactive');
+
 -- Create 'User' table
+DROP TABLE IF EXISTS public."User" CASCADE;
 CREATE TABLE public."User"
 (
-    user_id integer NOT NULL,
+    user_id SERIAL NOT NULL,
     username character(15) NOT NULL,
     email character(50) NOT NULL,
     first_name character(50) NOT NULL,
     last_name character(50) NOT NULL,
     phone character(10),
-    status integer NOT NULL,
+    status UserStatus NOT NULL,
     score bigint,
     CONSTRAINT user_id PRIMARY KEY (user_id)
         INCLUDE(user_id),
@@ -41,10 +46,15 @@ TABLESPACE pg_default;
 ALTER TABLE public."User"
     OWNER to capstone_user;
 
+-- Create 'EventStatus' type
+DROP TYPE IF EXISTS EventStatus CASCADE;
+CREATE TYPE EventStatus AS ENUM ('open', 'closed', 'pending');
+
 -- Create 'Event' Table
+DROP TABLE IF EXISTS public."Event" CASCADE;
 CREATE TABLE public."Event"
 (
-    event_id integer NOT NULL,
+    event_id SERIAL NOT NULL,
     event_title character(50) NOT NULL,
     summary character(250),
     organizers character(50)[],
@@ -52,6 +62,7 @@ CREATE TABLE public."Event"
     capacity integer,
     location character(250) NOT NULL,
     date date NOT NULL,
+    status EventStatus NOT NULL,
     CONSTRAINT event_id PRIMARY KEY (event_id),
     CONSTRAINT "Unique Title" UNIQUE (event_title),
     CONSTRAINT "Num Registered GT 0" CHECK (num_registered >= 0) NOT VALID,
@@ -63,9 +74,10 @@ ALTER TABLE public."Event"
     OWNER to capstone_user;
 
 -- Create 'Goal' Table
+DROP TABLE IF EXISTS public."Goal" CASCADE;
 CREATE TABLE public."Goal"
 (
-    goal_id integer NOT NULL,
+    goal_id SERIAL NOT NULL,
     user_id integer NOT NULL,
     summary text NOT NULL,
     to_be_completed date,
@@ -80,9 +92,10 @@ ALTER TABLE public."Goal"
     OWNER to capstone_user;
 
 -- Create 'Achievement' Table
+DROP TABLE IF EXISTS public."Achievement" CASCADE;
 CREATE TABLE public."Achievement"
 (
-    achievement_id integer NOT NULL,
+    achievement_id SERIAL NOT NULL,
     user_id integer NOT NULL,
     title character(50) NOT NULL,
     summary character(250) NOT NULL,
@@ -101,9 +114,10 @@ ALTER TABLE public."Achievement"
     OWNER to capstone_user;
 
 -- Create 'Certification' Table
+DROP TABLE IF EXISTS public."Certification" CASCADE;
 CREATE TABLE public."Certification"
 (
-    certification_id integer NOT NULL,
+    certification_id SERIAL NOT NULL,
     user_id integer NOT NULL,
     name character(50) NOT NULL,
     description character(250),
@@ -120,9 +134,10 @@ ALTER TABLE public."Certification"
     OWNER to capstone_user;
 
 -- Create 'Training' Table
+DROP TABLE IF EXISTS public."Training" CASCADE;
 CREATE TABLE public."Training"
 (
-    training_id integer NOT NULL,
+    training_id SERIAL NOT NULL,
     title character(100) NOT NULL,
     url text NOT NULL,
     keywords character(50)[] NOT NULL,
@@ -141,13 +156,18 @@ TABLESPACE pg_default;
 ALTER TABLE public."Training"
     OWNER to capstone_user;
 
+-- Create 'UserEventStatus' type
+DROP TYPE IF EXISTS UserEventStatus CASCADE;
+CREATE TYPE UserEventStatus AS ENUM ('registered', 'interested', 'attended');
+
 -- Create 'UserEvent' Table
+DROP TABLE IF EXISTS public."UserEvent" CASCADE;
 CREATE TABLE public."UserEvent"
 (
-    user_event_id integer NOT NULL,
+    user_event_id SERIAL NOT NULL,
     event_id integer NOT NULL,
     user_id integer NOT NULL,
-    status integer NOT NULL,
+    status UserEventStatus NOT NULL,
     CONSTRAINT user_event_id PRIMARY KEY (user_event_id),
     CONSTRAINT "User-Event" UNIQUE (event_id, user_id),
     CONSTRAINT event_id FOREIGN KEY (event_id)
@@ -157,21 +177,24 @@ CREATE TABLE public."UserEvent"
     CONSTRAINT user_id FOREIGN KEY (user_id)
         REFERENCES public."User" (user_id) MATCH SIMPLE
         ON UPDATE NO ACTION
-        ON DELETE CASCADE,
-    CONSTRAINT "Status GT 0" CHECK (status >= 0) NOT VALID,
-    CONSTRAINT "Status LT 3" CHECK (status <= 3) NOT VALID
+        ON DELETE CASCADE
 )
 TABLESPACE pg_default;
 ALTER TABLE public."UserEvent"
     OWNER to capstone_user;
 
+-- Create 'UserEventStatus' type
+DROP TYPE IF EXISTS UserTrainingStatus CASCADE;
+CREATE TYPE UserTrainingStatus AS ENUM ('pending', 'interested', 'watched');
+
 -- Create 'UserTraining' Table
+DROP TABLE IF EXISTS public."UserTraining" CASCADE;
 CREATE TABLE public."UserTraining"
 (
-    user_training_id integer NOT NULL,
+    user_training_id SERIAL NOT NULL,
     training_id integer NOT NULL,
     user_id integer NOT NULL,
-    status integer NOT NULL,
+    status UserTrainingStatus NOT NULL,
     CONSTRAINT user_training_id PRIMARY KEY (user_training_id),
     CONSTRAINT "User-Training" UNIQUE (training_id, user_id),
     CONSTRAINT training_id FOREIGN KEY (training_id)
@@ -181,9 +204,7 @@ CREATE TABLE public."UserTraining"
     CONSTRAINT user_id FOREIGN KEY (user_id)
         REFERENCES public."User" (user_id) MATCH SIMPLE
         ON UPDATE NO ACTION
-        ON DELETE CASCADE,
-    CONSTRAINT "Status GT 0" CHECK (status >= 0) NOT VALID,
-    CONSTRAINT "Status LT 3" CHECK (status <= 3) NOT VALID
+        ON DELETE CASCADE
 )
 TABLESPACE pg_default;
 ALTER TABLE public."UserTraining"

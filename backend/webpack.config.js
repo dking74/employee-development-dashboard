@@ -9,10 +9,6 @@ module.exports = {
         path: resolve(__dirname, 'dist'),
         filename: 'server.js'
     },
-    devServer: {
-        open: true,
-        host: 'localhost',
-    },
     module: {
         rules: [
             {

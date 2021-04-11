@@ -1,4 +1,4 @@
-import { Pool } from 'pg';
+import { Pool, QueryResult } from 'pg';
 import { to } from 'await-to-js';
 
 import config from '../config';
@@ -13,15 +13,15 @@ const pool = new Pool(config()?.database);
  * @param parameters 
  * @returns 
  */
-export const query = async (query: string, parameters: Array<string> = []) => {
+export const query = async (query: string, parameters: Array<string> = []): Promise<QueryResult<any> | any> => {
   return pool.connect()
     .then(async client => {
       const [error, result] = await to(client.query(query, parameters));
       client.release();
 
       if (error) throw new InternalError(error.message, error.stack);
-      return result?.rows;
-    })
+      return result;// ?.rows;
+    });
 }
 
 export default pool;

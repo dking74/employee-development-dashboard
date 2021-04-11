@@ -1,5 +1,8 @@
 import express from 'express';
+
 import userServices from '@v1/services/users';
+import { CreateUserRequest } from '@types';
+
 
 export const getAllUsers = async (req: express.Request, res: express.Response) => {
   const _queryParams = req.queryParameters;
@@ -13,6 +16,14 @@ export const getUser = async (req: express.Request, res: express.Response) => {
   res.status(200).json(user);
 }
 
+export const createUser = async (req: express.Request, res: express.Response) => {
+  const user: CreateUserRequest = req.body;
+  const userCreated = await userServices.createUser(user);
+  res.status(200).json(userCreated);
+}
+
 export default {
   getAllUsers,
+  getUser,
+
 }

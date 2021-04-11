@@ -8,6 +8,14 @@ class BaseHttpError extends Error {
     this.code = code;
     this.details = details;
   }
+
+  toJSON() {
+    return {
+      code: this.code,
+      message: this.message,
+      details: this.details,
+    }
+  }
 }
 
 export class BadRequestError extends BaseHttpError {

@@ -9,6 +9,9 @@ const app = express();
 // Enable cors for localhost testing
 app.use(cors());
 
+// Allow for Request body to be parsed w/ json
+app.use(express.json());
+
 // Attach v1 service endpoints to app
 app.use('/v1', v1);
 

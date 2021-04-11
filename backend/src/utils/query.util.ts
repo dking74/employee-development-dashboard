@@ -19,6 +19,13 @@ export const constuctFilteredQuery = (baseQuery: string, queryParams: QueryParam
     query: `${baseQuery}${queryParams.query.length ? ` WHERE ${queryParams.query}` : ''}`,
     parameters: queryParams.parameters
   };
+};
+
+export const constructInsertQuery = <T>(tableName: string, creationObject: T): QueryParameters => {
+  const _query = PostgresInsert<T>(tableName, creationObject);
+  const _queryParams = Object.values(creationObject);
+
+  return { query: _query, parameters: _queryParams};
 }
 
 export const PostgresQuery = (tableName: string, properties: Array<string> = [], namespace = 'public') => {
@@ -28,3 +35,9 @@ export const PostgresQuery = (tableName: string, properties: Array<string> = [],
 
   return `SELECT ${_propsString} FROM ${namespace}."${tableName}"`;
 };
+
+export const PostgresInsert = <T>(tableName: string, properties: T, namespace: string = 'public') => {
+  const columnNames = Object.keys(properties);
+  const valueNames = columnNames.map((val: string , index: number) => `$${index + 1}`);
+  return `INSERT INTO ${namespace}."${tableName}"(${columnNames.join(',')}) VALUES (${valueNames.join(',')})`;
+}
