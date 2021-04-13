@@ -1,4 +1,5 @@
 -- Create 'capstone_user' role
+DROP ROLE IF EXISTS capstone_user;
 CREATE ROLE capstone_user WITH
 	LOGIN
 	NOSUPERUSER
@@ -10,6 +11,7 @@ CREATE ROLE capstone_user WITH
 	PASSWORD 'xxxxxx';
 
 -- Create 'Capstone' database
+DROP DATABASE IF EXISTS "Capstone";
 CREATE DATABASE "Capstone"
     WITH 
     OWNER = postgres
@@ -29,11 +31,11 @@ DROP TABLE IF EXISTS public."User" CASCADE;
 CREATE TABLE public."User"
 (
     user_id SERIAL NOT NULL,
-    username character(15) NOT NULL,
-    email character(50) NOT NULL,
-    first_name character(50) NOT NULL,
-    last_name character(50) NOT NULL,
-    phone character(10),
+    username text NOT NULL,
+    email text NOT NULL,
+    first_name text NOT NULL,
+    last_name text NOT NULL,
+    phone text DEFAULT ''
     status UserStatus NOT NULL,
     score bigint,
     CONSTRAINT user_id PRIMARY KEY (user_id)
@@ -55,12 +57,12 @@ DROP TABLE IF EXISTS public."Event" CASCADE;
 CREATE TABLE public."Event"
 (
     event_id SERIAL NOT NULL,
-    event_title character(50) NOT NULL,
-    summary character(250),
-    organizers character(50)[],
+    event_title text NOT NULL,
+    summary text,
+    organizers text[],
     num_registered integer NOT NULL,
-    capacity integer,
-    location character(250) NOT NULL,
+    capacity integer DEFAULT 0,
+    location text NOT NULL,
     date date NOT NULL,
     status EventStatus NOT NULL,
     CONSTRAINT event_id PRIMARY KEY (event_id),
@@ -97,8 +99,8 @@ CREATE TABLE public."Achievement"
 (
     achievement_id SERIAL NOT NULL,
     user_id integer NOT NULL,
-    title character(50) NOT NULL,
-    summary character(250) NOT NULL,
+    title text NOT NULL,
+    summary text NOT NULL,
     completed_date date NOT NULL,
     other_comments text,
     attachment_url text[],
@@ -119,8 +121,8 @@ CREATE TABLE public."Certification"
 (
     certification_id SERIAL NOT NULL,
     user_id integer NOT NULL,
-    name character(50) NOT NULL,
-    description character(250),
+    name text NOT NULL,
+    description text,
     attachment_url text,
     CONSTRAINT certification_id PRIMARY KEY (certification_id),
     CONSTRAINT name UNIQUE (name),
@@ -138,10 +140,10 @@ DROP TABLE IF EXISTS public."Training" CASCADE;
 CREATE TABLE public."Training"
 (
     training_id SERIAL NOT NULL,
-    title character(100) NOT NULL,
+    title text NOT NULL,
     url text NOT NULL,
-    keywords character(50)[] NOT NULL,
-    category character(50),
+    keywords text[] NOT NULL,
+    category text,
     views integer,
     rating double precision,
     num_ratings integer,

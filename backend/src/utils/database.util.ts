@@ -20,7 +20,7 @@ export const query = async (query: string, parameters: Array<string> = []): Prom
       client.release();
 
       if (error) throw new InternalError(error.message, error.stack);
-      return result;// ?.rows;
+      return result?.rows;
     });
 }
 

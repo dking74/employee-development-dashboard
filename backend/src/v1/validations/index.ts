@@ -2,7 +2,7 @@ import express from 'express';
 import { ObjectSchema } from 'joi';
 
 import { BadRequestError } from '@http-errors';
-import { createUserBodySchema } from './users';
+import { createUserBodySchema, updateUserBodySchema } from './users';
 
 
 export const validateBody = (schema: ObjectSchema) => {
@@ -18,6 +18,6 @@ export const validateBody = (schema: ObjectSchema) => {
   }
 };
 
-export { createUserBodySchema };
+export { createUserBodySchema, updateUserBodySchema };
 
 export default validateBody;
