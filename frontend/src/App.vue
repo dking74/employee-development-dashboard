@@ -5,9 +5,13 @@
 </template>
 
 <script>
-
 export default {
   name: 'App',
+  watch: {
+    isAppIdle(isIdle) {
+      if (isIdle) this.$auth.logout();
+    }
+  }
 };
 </script>
 

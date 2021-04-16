@@ -1,15 +1,31 @@
 import Vue from 'vue';
-import App from './App.vue';
-import router from './router';
+import IdleVue from 'idle-vue';
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 
-// Import the Auth0 configuration
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+import router from './router';
+import store from './store';
+import { Auth0Plugin } from "./auth";
 import { domain, clientId } from "../auth_config.json";
 
-// Import the plugin here
-import { Auth0Plugin } from "./auth";
+import App from './App.vue';
+
+import './app.scss';
 
 Vue.config.productionTip = false;
 
+// Enable Bootstrap
+Vue.use(BootstrapVue);
+Vue.use(IconsPlugin);
+
+// Use Fontawesome for extra icon
+library.add(faUserSecret)
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+
+// Auth0 Plugin
 Vue.use(Auth0Plugin, {
   domain,
   clientId,
@@ -22,7 +38,16 @@ Vue.use(Auth0Plugin, {
   }
 });
 
+// IdleVue Plugin
+Vue.use(IdleVue, {
+  eventEmitter: new Vue(),
+  store,
+  idleTime: 900000, // 15 minutes
+  startAtIdle: false
+});
+
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')
