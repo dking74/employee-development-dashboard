@@ -27,7 +27,9 @@ export const useAuth0 = ({
         user: {},
         auth0Client: null,
         popupOpen: false,
-        error: null
+        error: null,
+        namespace: 'http://employee-development-dashboard',
+        additionalUserFields: ['first_name', 'last_name', 'username']
       };
     },
     methods: {
@@ -85,6 +87,21 @@ export const useAuth0 = ({
       /** Logs the user out and removes their session on the authorization server */
       logout(o) {
         return this.auth0Client.logout(o);
+      },
+      adjustUser() {
+        if (!this.user) return;
+
+        const { name, email, nickname } = this.user;
+        const additionalUserFields = this.additionalUserFields.reduce((prev, curr) => {
+          const currentField = `${this.namespace}/${curr}`;
+          prev[curr] = this.user[currentField];
+          return prev;
+        }, {});
+        this.user = {
+          name, email, nickname,
+          ...additionalUserFields,
+        };
+        return this.user;
       }
     },
     /** Use this lifecycle method to instantiate the SDK client */
@@ -93,7 +110,7 @@ export const useAuth0 = ({
       this.auth0Client = await createAuth0Client({
         ...options,
         client_id: options.clientId,
-        redirect_uri: redirectUri
+        redirect_uri: redirectUri,
       });
 
       try {
@@ -117,6 +134,7 @@ export const useAuth0 = ({
         // Initialize our internal authentication state
         this.isAuthenticated = await this.auth0Client.isAuthenticated();
         this.user = await this.auth0Client.getUser();
+        this.adjustUser();
         this.loading = false;
       }
     }

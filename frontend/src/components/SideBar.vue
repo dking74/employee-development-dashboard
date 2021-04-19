@@ -16,17 +16,12 @@
           <b-nav-item v-bind="getLinkProps('my-career/certifications', 'Certifications')">Certifications</b-nav-item>
           <b-nav-item v-bind="getLinkProps('my-career/documents', 'Documents')">Documents</b-nav-item>
         </div>
-        <!-- <b-nav-item-dropdown @click="hide" text="My Career" block menu-class="w-100">
-          <b-dropdown-item v-bind="getLinkProps('my-career/accomplishments', 'Accomplishments')">Accomplishments</b-dropdown-item>
-          <b-dropdown-item v-bind="getLinkProps('my-career/goals', 'Goals')">Goals</b-dropdown-item>
-          <b-dropdown-item v-bind="getLinkProps('my-career/certifications', 'Certifications')">Certifications</b-dropdown-item>
-          <b-dropdown-item v-bind="getLinkProps('my-career/documents', 'Documents')">Documents</b-dropdown-item>
-        </b-nav-item-dropdown> -->
         <b-nav-item v-bind="getLinkProps('events', 'Events')">Events</b-nav-item>
         <b-nav-item v-bind="getLinkProps('learning', 'Learning')">Learning</b-nav-item>
         <b-nav-item v-bind="getLinkProps('', 'leaderboard')" disabled>Leaderboard</b-nav-item>
       </b-nav>
-      <div slot="footer">Testing
+      <div slot="footer">
+        <b-button variant="success" @click="logout">Logout</b-button>
       </div>
     </b-sidebar>
   </div>
@@ -59,6 +54,9 @@ export default {
     },
     toggleMyCareerDropdown() {
       this.myCareerDropdownOpen = !this.myCareerDropdownOpen;
+    },
+    logout() {
+      this.$auth.logout();
     }
   }
 }

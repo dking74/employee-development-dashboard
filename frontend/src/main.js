@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import router from './router';
 import store from './store';
 import { Auth0Plugin } from "./auth";
-import { domain, clientId } from "../auth_config.json";
+import { domain, clientId, /*audience*/ } from "../auth_config.json";
 
 import App from './App.vue';
 
@@ -29,6 +29,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.use(Auth0Plugin, {
   domain,
   clientId,
+  /* audience, */
   onRedirectCallback: appState => {
     router.push(
       appState && appState.targetUrl
