@@ -13,7 +13,7 @@ const pool = new Pool(config()?.database);
  * @param parameters 
  * @returns 
  */
-export const query = async (query: string, parameters: Array<string> = []): Promise<QueryResult<any> | any> => {
+export const query = async (query: string, parameters: Array<string | number> = []): Promise<QueryResult<any> | any> => {
   return pool.connect()
     .then(async client => {
       const [error, result] = await to(client.query(query, parameters));

@@ -4,7 +4,9 @@ type IdentifierJoiner = 'AND' | 'OR';
 
 export const getQueryParameters = <T extends QueryObject>(object: T, validKeys: Array<string> = []): QueryParameters => {
   const _queryParams = Object.keys(object).reduce((prev: any, curr: string, currIndex: number) => {
-    if ((validKeys.length > 0 && validKeys.includes(curr)) || validKeys.length === 0) {
+    if (curr === 'limit') {
+      prev['limit'] = object['limit'];
+    } else if ((validKeys.length > 0 && validKeys.includes(curr)) || validKeys.length === 0) {
       prev['query'].push(`${curr} = $${currIndex + 1}`);
       prev['parameters'].push(object[curr]);
     }
@@ -16,9 +18,38 @@ export const getQueryParameters = <T extends QueryObject>(object: T, validKeys: 
   return _queryParams;
 };
 
+export const filterKeyIdentifier = <T extends TableIdentifier>(constraints: T): T => {
+  return Object.keys(constraints).reduce((prev: any, curr: string) => {
+    const currentValue = constraints[curr];
+    if (currentValue) prev[curr] = currentValue;
+    return prev;
+  }, {});
+};
+
+export const constructUniqueQueryParameters = <T extends TableIdentifier>(uniqueConstraints: T): QueryParameters => {
+  const _queryParams = Object.keys(uniqueConstraints).reduce((prev: any, curr: string) => {
+    const currentValue = uniqueConstraints[curr];
+    if (!currentValue && typeof currentValue !== 'string') return prev;
+
+    prev['query'].push(`${curr} = $${prev.parameters.length + 1}`);
+    prev['parameters'].push(currentValue);
+    
+    return prev;
+  }, { query: [], parameters: [] });
+
+  _queryParams.query = _queryParams.query.join(' OR ');
+  return _queryParams;
+}
+
 export const constuctFilteredQuery = (baseQuery: string, queryParams: QueryParameters): QueryParameters => {
+  if (queryParams.limit) queryParams.parameters.push(queryParams.limit);
+  const _query = `${baseQuery}
+    ${queryParams.query.length ? ` WHERE ${queryParams.query}` : ''}
+    ${queryParams.limit ? ` LIMIT $${queryParams.parameters.length}` : ''}
+  `;
+
   return {
-    query: `${baseQuery}${queryParams.query.length ? ` WHERE ${queryParams.query}` : ''}`,
+    query: _query,
     parameters: queryParams.parameters
   };
 };

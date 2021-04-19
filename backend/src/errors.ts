@@ -25,7 +25,6 @@ export class BadRequestError extends BaseHttpError {
 }
 
 export class InternalError extends BaseHttpError {
-
   constructor(message: string = '', details: string = '') {
     super(
       500,

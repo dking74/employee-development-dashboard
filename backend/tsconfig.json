@@ -83,7 +83,7 @@
   ],
   "include": [
     "src/*.ts"
-  ],
+, "src/v1/middleware/auth.ts"  ],
   "exclude": [
     "**/*.spec.(ts|js)"
   ]

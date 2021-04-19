@@ -1,5 +1,5 @@
 import { query } from '@utils/database.util';
-import { constructDeleteQuery, constructInsertQuery, constructUpdateQuery, constuctFilteredQuery, PostgresQuery } from '@utils/query.util';
+import { constructDeleteQuery, constructInsertQuery, constructUniqueQueryParameters, constructUpdateQuery, constuctFilteredQuery, PostgresQuery } from '@utils/query.util';
 import { CreateUserRequest, QueryParameters, UpdateUserRequest, User } from '@types';
 import { BadRequestError, InternalError } from '@http-errors';
 
@@ -9,7 +9,7 @@ export const getAllUsers = async (queryParams: QueryParameters): Promise<User[]>
 };
 
 export const getUser = async (userId: string): Promise<User> => {
-  const _query = constuctFilteredQuery(PostgresQuery('User'), { query: 'username = $1 OR email = $1', parameters: [userId] });
+  const _query = constuctFilteredQuery(PostgresQuery('User'), constructUniqueQueryParameters({ user_id: parseInt(userId), username: userId, email: userId})); 
   const user = await query(_query.query, _query.parameters);
   if (user.length === 0) {
     throw new BadRequestError(`Could not find the user with userId: '${userId}'`);

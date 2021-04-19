@@ -3,7 +3,8 @@ import { ObjectSchema } from 'joi';
 
 import { BadRequestError } from '@http-errors';
 import { createUserBodySchema, updateUserBodySchema } from './users';
-
+import { createAchievementSchema, updateAchievementSchema } from './achievements';
+import { createCertificationSchema, updateCertificationSchema } from './certifications';
 
 export const validateBody = (schema: ObjectSchema) => {
   return (req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -18,6 +19,18 @@ export const validateBody = (schema: ObjectSchema) => {
   }
 };
 
-export { createUserBodySchema, updateUserBodySchema };
+export {
+  // User Schemas
+  createUserBodySchema,
+  updateUserBodySchema,
+
+  // Achievement Schemas
+  createAchievementSchema,
+  updateAchievementSchema,
+
+  // Certification Schemas
+  createCertificationSchema,
+  updateCertificationSchema,
+};
 
 export default validateBody;
