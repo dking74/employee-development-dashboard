@@ -34,8 +34,34 @@ export const createUser = async (userInfo) => {
   return results.data;
 };
 
+export const getAchievements = async (userId) => {
+  const url = `${config.employeeDevelopmentApi}/users/${userId}/achievements`;
+  const [error, results] = await to(Axios.get(url));
+  if (error) {
+    throw new Error(`Unable to retrieve achievements for user: '${userId}'`);
+  }
+
+  return results.data;
+};
+
+/**
+ * @note This should only be used inside of the Form component 
+ * @param {*} url
+ * @param {*} data
+ */
+export const submitForm = async (resourceUrl, data, add = true) => {
+  const url = `${config.employeeDevelopmentApi}/${resourceUrl}`;
+  const [error] = await to(
+    (add) ? Axios.post(url, data) : Axios.put(url, data)
+  );
+  
+  return !!error;
+}
+
 export default {
   getUser,
   isUserExist,
   createUser,
+  getAchievements,
+  submitForm,
 };

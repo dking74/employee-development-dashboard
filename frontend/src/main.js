@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import IdleVue from 'idle-vue';
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
+import { BootstrapVue, IconsPlugin, ToastPlugin } from 'bootstrap-vue';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
@@ -20,6 +20,7 @@ Vue.config.productionTip = false;
 // Enable Bootstrap
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
+Vue.use(ToastPlugin);
 
 // Use Fontawesome for extra icon
 library.add(faUserSecret)

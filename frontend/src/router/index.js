@@ -1,9 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Home from '../views/Home.vue'
 import { authGuard } from '../auth/authGuard';
 import { getInstance } from '../auth';
+
+import Home from '../views/Home.vue'
+
+/** Achievement routes */
+import Achievements from '../views/achievements/Achievements.vue';
+import AddAchievement from '../views/achievements/Add-Achievement.vue';
+// import EditAchievement from '../views/achievements/Edit-Achievement.vue';
+
 
 Vue.use(VueRouter);
 
@@ -12,6 +19,16 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/my-career/achievements',
+    name: 'Achievements',
+    component: Achievements
+  },
+  {
+    path: '/my-career/achievements/add',
+    name: 'Add-Achievement',
+    component: AddAchievement
   },
   {
     path: '/about',
