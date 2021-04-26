@@ -19,7 +19,7 @@ export interface PostgresConfig {
 /**
  * Base query parameters
  */
-export type QueryObject = { [name: string]: string | number };
+export type QueryObject = { [name: string]: string | number | { [key: string]: string } };
 export interface QueryParameters {
   query: string;
   parameters: Array<string | number>;
@@ -87,4 +87,76 @@ export interface AchievementIdentifier extends TableIdentifier {
 export interface CertificationIdentifier extends TableIdentifier {
   certification_id: string;
   name: string;
+}
+
+/**
+ * Goal parameters
+ */
+export type GoalStatus = (typeof constants.goalStatus)[number];
+export interface Goal {
+  summary: string;
+  to_be_completed_date: string;
+  completed_date: string;
+  status: GoalStatus;
+}
+export interface GoalIdentifier extends TableIdentifier {
+  goal_id: string;
+}
+
+/**
+ * Event parameters
+ */
+export interface Event {
+  title: string;
+  summary: string;
+  organizers: Array<string>;
+  num_registered: number;
+  capacity: number;
+  location: string;
+}
+export interface EventIdentifier extends TableIdentifier {
+  event_id: string;
+  title: string;
+}
+
+/**
+ * Training parameters
+ */
+export type TrainingCategory = (typeof constants.trainingCategories)[number];
+export interface Training {
+  title: string;
+  url: string;
+  keywords: Array<string>;
+  categories: Array<TrainingCategory>;
+  views: number;
+  rating: number;
+  numRatings: number;
+}
+export interface TrainingIdentifier extends TableIdentifier {
+  training_id: string;
+  title: string;
+}
+
+/**
+ * UserEvent parameters
+ */
+export type UserEventStatus = (typeof constants.userEventStatus)[number];
+export interface UserEvent {
+  status: UserEventStatus;
+}
+export interface UserEventIdentifier extends TableIdentifier {
+  user_event_id: string;
+  combo_id: { user_id: string, event_id: string };
+}
+
+/**
+ * UserTraining parameters
+ */
+export type UserTrainingStatus = (typeof constants.userTrainingStatus)[number];
+export interface UserTraining {
+  status: UserTrainingStatus;
+}
+export interface UserTrainingIdentifier extends TableIdentifier {
+  user_training_id: string;
+  combo_id: { user_id: string, training_id: string };
 }

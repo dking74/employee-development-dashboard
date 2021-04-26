@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { isUserExist } from '../services/users';
+import { isUserExist } from '@v1/services/users';
 import { BadRequestError } from '@http-errors';
 import asyncWrapper from '@utils/service.util';
 

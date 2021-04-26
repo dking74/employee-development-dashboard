@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { isAchievementExist } from '../services/achievements';
+import { isAchievementExist } from '@v1/services/achievements';
 import { BadRequestError } from '@http-errors';
 import asyncWrapper from '@utils/service.util';
 

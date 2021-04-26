@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { getAllUsers, getUser, createUser, updateUser, deleteUser } from '@v1/controllers/users';
 import convertQueryParameters from '@v1/middleware/convertQueryParameters';
-import validateUserExists from '@v1/middleware/validateUserId';
+import validateUserExists from '@v1/middleware/validations/validateUserId';
 import { userQueryProperties } from '@constants';
 import asyncWrapper from '@utils/service.util';
 import validateBody, { createUserBodySchema, updateUserBodySchema } from '../validations';

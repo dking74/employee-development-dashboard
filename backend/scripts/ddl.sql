@@ -75,6 +75,10 @@ TABLESPACE pg_default;
 ALTER TABLE public."Event"
     OWNER to capstone_user;
 
+-- Create 'GoalStatus' type
+DROP TYPE IF EXISTS GoalStatus CASCADE;
+CREATE TYPE GoalStatus AS ENUM ('submitted', 'pending', 'completed');
+
 -- Create 'Goal' Table
 DROP TABLE IF EXISTS public."Goal" CASCADE;
 CREATE TABLE public."Goal"
@@ -82,7 +86,9 @@ CREATE TABLE public."Goal"
     goal_id SERIAL NOT NULL,
     user_id integer NOT NULL,
     summary text NOT NULL,
-    to_be_completed date,
+    to_be_completed_date date,
+    completed_date date,
+    status 
     CONSTRAINT goal_id PRIMARY KEY (goal_id),
     CONSTRAINT user_id FOREIGN KEY (user_id)
         REFERENCES public."User" (user_id) MATCH SIMPLE

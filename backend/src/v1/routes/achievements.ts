@@ -11,7 +11,7 @@ import { achievementQueryProperties } from '@constants';
 import asyncWrapper from '@utils/service.util';
 import convertQueryParameters from '../middleware/convertQueryParameters';
 import convertUserRequestBody from '../middleware/convertUserRequestBody';
-import validateAchievementExists from '../middleware/validateAchievementId';
+import validateAchievementExists from '../middleware/validations/validateAchievementId';
 import validateBody, { createAchievementSchema, updateAchievementSchema } from '../validations';
 
 const router = Router({ mergeParams: true });

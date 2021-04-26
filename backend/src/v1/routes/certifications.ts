@@ -11,7 +11,7 @@ import { certificationQueryProperties } from '@constants';
 import asyncWrapper from '@utils/service.util';
 import convertQueryParameters from '../middleware/convertQueryParameters';
 import convertUserRequestBody from '../middleware/convertUserRequestBody';
-import validateCertificationExists from '../middleware/validateCertificationExists';
+import validateCertificationExists from '../middleware/validations/validateCertificationExists';
 import validateBody, { createCertificationSchema, updateCertificationSchema } from '../validations';
 
 const router = Router({ mergeParams: true });
