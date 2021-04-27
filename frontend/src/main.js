@@ -14,6 +14,8 @@ import { domain, clientId, /*audience*/ } from "../auth_config.json";
 import App from './App.vue';
 
 import './app.scss';
+import 'vue-slick-carousel/dist/vue-slick-carousel.css';
+import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css';
 
 Vue.config.productionTip = false;
 

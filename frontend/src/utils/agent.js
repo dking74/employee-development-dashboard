@@ -44,6 +44,26 @@ export const getAchievements = async (userId) => {
   return results.data;
 };
 
+export const getAchievement = async (userId, achievementId) => {
+  const url = `${config.employeeDevelopmentApi}/users/${userId}/achievements/${achievementId}`;
+  const [error, results] = await to(Axios.get(url));
+  if (error) {
+    throw new Error(`Unable to retrieve achievement: '${achievementId}' for user: '${userId}'`);
+  }
+
+  return results.data;
+};
+
+export const deleteAchievement = async (userId, achievementId) => {
+  const url = `${config.employeeDevelopmentApi}/users/${userId}/achievements/${achievementId}`;
+  const [error, results] = await to(Axios.delete(url));
+  if (error) {
+    throw new Error(`Unable to delete achievement: '${achievementId}' for user: '${userId}'`);
+  }
+
+  return results.data;
+};
+
 /**
  * @note This should only be used inside of the Form component 
  * @param {*} url
@@ -63,5 +83,7 @@ export default {
   isUserExist,
   createUser,
   getAchievements,
+  getAchievement,
+  deleteAchievement,
   submitForm,
 };

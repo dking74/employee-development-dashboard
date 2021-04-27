@@ -9,7 +9,7 @@ import Home from '../views/Home.vue'
 /** Achievement routes */
 import Achievements from '../views/achievements/Achievements.vue';
 import AddAchievement from '../views/achievements/Add-Achievement.vue';
-// import EditAchievement from '../views/achievements/Edit-Achievement.vue';
+import EditAchievement from '../views/achievements/Edit-Achievement.vue';
 
 
 Vue.use(VueRouter);
@@ -20,6 +20,8 @@ const routes = [
     name: 'Home',
     component: Home
   },
+
+  /** Achievement routes */
   {
     path: '/my-career/achievements',
     name: 'Achievements',
@@ -30,6 +32,12 @@ const routes = [
     name: 'Add-Achievement',
     component: AddAchievement
   },
+  {
+    path: '/my-career/achievements/edit/:achievementId',
+    name: 'Edit-Achievement',
+    component: EditAchievement
+  },
+  
   {
     path: '/about',
     name: 'About',

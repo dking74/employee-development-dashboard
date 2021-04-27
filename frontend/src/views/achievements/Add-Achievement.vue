@@ -2,47 +2,23 @@
   <ed-form
     title="Add Achievement"
     :props="formProps"
-    :resource="{ name: 'achievements', type: 'add' }"
+    :resource="{ name: 'achievements', type: 'add', apiPath: getUserEndpoint('achievements') }"
     completedLink="/my-career/achievements"
   ></ed-form>
 </template>
 
 <script>
 import EdForm from '../../components/form/Form.vue';
+import UserMixin from '../../mixins/user.mixin';
+import { achievementFormProps } from '../../utils/constants';
 
 export default {
   name: 'ed-add-achievement',
-  computed: {
-    formProps() {
-      return [
-        {
-          name: 'title',
-          type: 'input',
-          label: 'Title',
-        },
-        {
-          name: 'summary',
-          type: 'textarea',
-          label: 'Summary'
-        },
-        {
-          name: 'completed_date',
-          type: 'datepicker',
-          label: 'Completed Date',
-          inline: true,
-          props: {
-            style: 'width: 300px',
-          }
-        },
-        {
-          name: 'other_comments',
-          type: 'textarea',
-          label: 'Other Comments'
-        }
-      ];
-    }
-  },
-  components: { EdForm }
+  data: () => ({
+    formProps: achievementFormProps
+  }),
+  components: { EdForm },
+  mixins: [UserMixin],
 }
 </script>
 

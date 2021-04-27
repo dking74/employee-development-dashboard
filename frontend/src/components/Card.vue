@@ -20,10 +20,10 @@
           :items="adjustedData"
           :fields="adjustedHeaders"
           v-bind="tableProps"
-          @row-clicked="dataRowClicked"
+          @row-clicked="editItem"
       >
         <template #cell(actions)="row">
-          <b-button size="sm" @click="deleteItem(row.item, row.index)" variant="danger" >
+          <b-button size="sm" @click="deleteItem(row.item)" variant="danger" >
             <b-icon icon="trash" />
           </b-button>
         </template>
@@ -81,30 +81,32 @@ export default {
     }
   },
   methods: {
-    deleteItem(itemValue, itemRow) {
-      console.log('Items: ', itemValue, itemRow);
+    editItem(event) {
+      this.$emit('edit', event);
     },
-    dataRowClicked(event) {
-      console.log('Here is the event: ', event);
+    deleteItem(itemValue) {
+      this.$emit('delete', itemValue);
     },
     adjustData() {
-      const data = [
-        {first_name: 'Devon' }
-      ];//this.data;
+      const data = this.data;
       this.adjustedData = data.length > 0 ? data.map((value, index) => {
         return {
           number: index + 1,
-          
           ...value,
         };
       }) : [];
     },
     adjustHeaders() {
-      this.adjustedHeaders = [
-        ...flattenDeep(this.adjustedData.map((value) => Object.keys(value).map(dataEl => {
+      const headers = this.dataHeaders && this.dataHeaders.length > 0
+        ? this.dataHeaders
+        : this.adjustedData.map((value) => Object.keys(value).map(dataEl => {
           const currentLabel = dataEl.split('_').map((el) => `${this.toUpperCase(el)}`).join(' '); 
           return ({ key: dataEl, label: currentLabel })
-        }))),
+        }));
+
+      this.adjustedHeaders = [
+        'number',
+        ...flattenDeep(headers),
         { key: 'actions', label: '', class: 'ed-action--table__header' },
       ];
     },
@@ -129,6 +131,13 @@ export default {
 
   td.ed-action--table__header {
     text-align: right;
+  }
+
+  .b-table {
+    thead tr th {
+      vertical-align: middle;
+      white-space: nowrap;
+    }
   }
 }
 </style>

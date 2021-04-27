@@ -22,9 +22,20 @@ export default {
     }
   },
   methods: {
+    getUserEndpoint(subPath) {
+      return `/users/${this.userId}/${subPath}`;
+    },
     async getAchievements() {
       const userId = this.userId;
       return await agent.getAchievements(userId);
-    }
+    },
+    async getAchievement(achievementId) {
+      const userId = this.userId; 
+      return await agent.getAchievement(userId, achievementId);
+    },
+    async deleteAchievement(achievementId) {
+      const userId = this.userId; 
+      return await agent.deleteAchievement(userId, achievementId);
+    },
   }
 }

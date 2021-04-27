@@ -39,7 +39,10 @@ export default {
     },
     isGreaterThanMedium() {
       return this.screenWidth > this.mediumScreen;
-    }
+    },
+    isGreaterThanSmall() {
+      return this.screenWidth > this.smallScreen;
+    },
   },
   methods: {
     isScreenGreaterThanNumber(screenSize) {

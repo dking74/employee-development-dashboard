@@ -18,16 +18,13 @@
 
 <script>
 import EdBaseForm from './BaseForm.vue';
-
+import ToastMixin from '../../mixins/toast.mixin';
 import agent from '../../utils/agent';
 
 export default {
   name: 'ed-form',
   mounted() {
-    this.form = (this.props && this.props.reduce((prev, curr) => {
-      prev[curr.name] = curr.value || '';
-      return prev;
-    }, {})) || {};
+    this.updateFormData();
   },
   data: () => ({
     form: {}
@@ -42,7 +39,8 @@ export default {
       required: true,
       type: Object,
       validator: (element) => {
-        return element['name'] && element['type'] && ['add','edit'].includes(element['type']);
+        return element['name'] && element['apiPath']
+          && element['type'] && ['add','edit'].includes(element['type']);
       }
     },
     completedLink: {
@@ -81,19 +79,11 @@ export default {
       event.preventDefault();
 
       agent.submitForm(
-        this.resource.name,
+        this.resource.apiPath || this.resource.name,
         this.form,
-        this.resource.type
+        this.resource.type === 'add'
       ).then((error) => {
-        this.$root.$bvToast.toast(
-          this.getToastMessage(error), {
-            title: (error) ? 'Error!' : 'Success!',
-            variant: (error) ? 'danger' : 'success',
-            toaster: 'b-toaster-bottom-center',
-            autoHideDelay: 3000,
-          }
-        );
-
+        this.showToast(this.getToastMessage(error), error);
         !error && (this.completedLink ? this.$router.push(this.completedLink) : this.$router.go(-1));
       });
     },
@@ -105,9 +95,24 @@ export default {
       return error
         ? `Unable to ${resource.type} ${resource.name}.`
         : `Successfully able to ${resource.type} ${resource.name}`
+    },
+    updateFormData() {
+      this.form = (this.props && this.props.reduce((prev, curr) => {
+        prev[curr.name] = curr.value || '';
+        return prev;
+      }, {})) || {};
     }
   },
-  components: { EdBaseForm }
+  watch: {
+    props: {
+      deep: true,
+      handler() {
+        this.updateFormData();
+      }
+    }
+  },
+  components: { EdBaseForm },
+  mixins: [ToastMixin]
 }
 </script>
 
