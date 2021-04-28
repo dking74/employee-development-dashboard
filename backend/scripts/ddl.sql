@@ -153,6 +153,7 @@ CREATE TABLE public."Training"
     views integer,
     rating double precision,
     num_ratings integer,
+    total_ratings_score integer,
     CONSTRAINT training_id PRIMARY KEY (training_id),
     CONSTRAINT "Title" UNIQUE (title),
     CONSTRAINT "Views GT 0" CHECK (views >= 0) NOT VALID,

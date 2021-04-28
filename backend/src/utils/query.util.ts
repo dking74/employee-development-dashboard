@@ -1,14 +1,20 @@
 import { QueryObject, QueryParameters, TableIdentifier } from '@types';
+import { isEmpty } from 'lodash';
 
 type IdentifierJoiner = 'AND' | 'OR';
 
-export const getQueryParameters = <T extends QueryObject>(object: T, validKeys: Array<string> = []): QueryParameters => {
-  const _queryParams = Object.keys(object).reduce((prev: any, curr: string, currIndex: number) => {
+export const getQueryParameters = <T extends QueryObject>(object: T, validKeys: Array<string> = [], keySignMapping: { [key: string]: string } = {}): QueryParameters => {
+  let queryIndex = 1;
+  const _queryParams = Object.keys(object).reduce((prev: any, curr: string) => {
+    if (validKeys.length > 0 && !validKeys.includes(curr)) return prev;
+
     if (curr === 'limit') {
       prev['limit'] = object['limit'];
-    } else if ((validKeys.length > 0 && validKeys.includes(curr)) || validKeys.length === 0) {
-      prev['query'].push(`${curr} = $${currIndex + 1}`);
+    } else if (validKeys.includes(curr)) {
+      const signComparison = !isEmpty(keySignMapping) ? keySignMapping[curr] || '=' : '='; 
+      prev['query'].push(`${curr} ${signComparison} $${queryIndex}`);
       prev['parameters'].push(object[curr]);
+      queryIndex++;
     }
     
     return prev;
@@ -69,20 +75,20 @@ export const constructUpdateQuery = <T extends TableIdentifier, U>(
     identifier: T,
     updateObject: U,
     identifierJoin: IdentifierJoiner = 'OR',
-    namepsace: string = 'public') => {
+    namepsace: string = 'public'): QueryParameters => {
   const _query = PostgresUpdate(tableName, identifier, updateObject, identifierJoin, namepsace);
   const _queryParams = [...Object.values(identifier), ...Object.values(updateObject)];
 
   return { query: _query, parameters: _queryParams };
 };
 
-export const constructDeleteQuery = <T extends TableIdentifier, U>(
+export const constructDeleteQuery = <T extends TableIdentifier>(
     tableName: string,
     identifier: T,
     identifierJoin: IdentifierJoiner = 'OR',
-    namepsace: string = 'public') => {
+    namepsace: string = 'public'): QueryParameters => {
   const _query = PostgresDelete(tableName, identifier, identifierJoin, namepsace);
-  const _queryParams = Object.values(identifier);
+  const _queryParams = Object.values(identifier) as Array<string | number>;
 
   return { query: _query, parameters: _queryParams };
 };

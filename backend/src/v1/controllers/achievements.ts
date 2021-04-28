@@ -2,9 +2,6 @@ import express from 'express';
 
 import userServices from '@v1/services/achievements';
 import { Achievement } from '@types';
-//import { } from '@types';
-//import { BadRequestError } from '@http-errors';
-
 
 export const getAllAchievements = async (req: express.Request, res: express.Response) => {
   const _queryParams = req.queryParameters;
@@ -42,4 +39,5 @@ export default {
   getAchievement,
   createAchievement,
   updateAchievement,
+  deleteAchievement,
 }

@@ -9,6 +9,9 @@ export const userTrainingStatus = [ 'pending', 'interested', 'watched' ];
 export const userQueryProperties = [ 'first_name', 'last_name', 'status' ];
 export const achievementQueryProperties = [ 'limit' ];
 export const certificationQueryProperties = [ 'limit' ];
+export const goalQueryProperties = [ 'limit' ];
+export const eventQueryProperties = [ 'limit', 'status' ];
+export const trainingQueryProperties = [ 'limit', 'rating' ];
 export const userProperties = [
   'username',
   'email',
@@ -47,5 +50,8 @@ export default {
   userQueryProperties,
   userProperties,
   achievementQueryProperties,
+  goalQueryProperties,
+  eventQueryProperties,
+  trainingQueryProperties,
   trainingCategories,
 }

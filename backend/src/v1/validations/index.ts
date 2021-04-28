@@ -5,6 +5,9 @@ import { BadRequestError } from '@http-errors';
 import { createUserBodySchema, updateUserBodySchema } from './users';
 import { createAchievementSchema, updateAchievementSchema } from './achievements';
 import { createCertificationSchema, updateCertificationSchema } from './certifications';
+import { createGoalBodySchema, updateGoalBodySchema } from './goals';
+import { createEventBodySchema, updateEventBodySchema } from './events'; 
+import { createTrainingBodySchema, updateTrainingBodySchema } from './trainings';
 
 export const validateBody = (schema: ObjectSchema) => {
   return (req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -31,6 +34,18 @@ export {
   // Certification Schemas
   createCertificationSchema,
   updateCertificationSchema,
+
+  // Goal Schemas
+  createGoalBodySchema,
+  updateGoalBodySchema,
+
+  // Event Schemas
+  createEventBodySchema,
+  updateEventBodySchema,
+
+  // Training Schemas
+  createTrainingBodySchema,
+  updateTrainingBodySchema,
 };
 
 export default validateBody;
