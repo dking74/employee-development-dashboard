@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --watch ./src --exec 'npm run build && npm run start' --ext ts",
-    "build": "webpack --mode=production",
+    "build": "npm run build:prod",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:dev": "webpack --mode=development",
-    "build:prod": "webpack --mode=production",
+    "build:prod": "DEPLOYED_ENV=production webpack --mode=production",
     "start": "node ./dist/server.js"
   },
   "keywords": [
