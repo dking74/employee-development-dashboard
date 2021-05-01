@@ -14,6 +14,8 @@ import store from './store';
 import { Auth0Plugin } from './auth';
 import { formatDate } from './utils';
 
+import { domain, clientId } from '../auth_config.json';
+
 import App from './App.vue';
 import './app.scss';
 
@@ -30,8 +32,8 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 // Auth0 Plugin
 Vue.use(Auth0Plugin, {
-  domain: process.env.VUE_APP_AUTH0_DOMAIN,
-  clientId: process.env.VUE_APP_AUTH0_CLIENTID,
+  domain,
+  clientId,
   /* audience, */
   onRedirectCallback: appState => {
     router.push(
