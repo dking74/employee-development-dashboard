@@ -1,19 +1,9 @@
 import winston, { createLogger } from 'winston';
-// @ts-ignore
-import PaperTrail from 'winston-papertrail';
 
-const transport = (!process.env.DEPLOYED_ENV || process.env.DEPLOYED_ENV === 'development')
-  ? new winston.transports.Console({
-      level: 'debug',
-    })
-  : new PaperTrail({
-      host: process.env.LOGGER_HOST,
-      port: process.env.LOGGER_PORT,
-      level: 'debug',
-      logFormat: function(level: string, message: string) {
-        return '[' + level + '] ' + message;
-      }
-  });
+const transport = new winston.transports.Console({
+  level: 'debug',
+  format: winston.format.simple()
+})
 transport.on('connect', function(message: string) {
   logger && logger.info(message);
 });

@@ -21,6 +21,8 @@ export const query = async (query: string, parameters: Array<string | number> = 
 
       if (error) throw new InternalError(error.message, error.stack);
       return result?.rows;
+    }).catch((error) => {
+      throw new InternalError(`Unable to connect to database: '${error.message}'`);
     });
 }
 

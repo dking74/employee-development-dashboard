@@ -1,4 +1,5 @@
 import { Config } from '../types';
+import logger from '../logger';
 import development from './development';
 import production from './production';
 

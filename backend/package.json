@@ -4,12 +4,13 @@
   "description": "My webpack project",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --watch ./src --exec 'npm run build && npm run start' --ext ts",
+    "dev": "nodemon --watch ./src --exec 'npm run build:dev && npm run start:dev' --ext ts",
     "build": "npm run build:prod",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production",
-    "start": "pm2 start ./dist/server.js -i 4 -f"
+    "start": "pm2 start ./dist/server.js -i 4 -f",
+    "start:dev": "node ./dist/server.js"
   },
   "keywords": [
     "employee",
@@ -30,8 +31,7 @@
     "lodash": "^4.17.21",
     "pg": "^8.5.1",
     "pm2": "^4.5.6",
-    "winston": "^3.3.3",
-    "winston-papertrail": "^1.0.5"
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.10",
