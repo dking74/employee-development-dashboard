@@ -2,7 +2,6 @@ import common, { mergeProperties } from './common';
 
 export default mergeProperties(common, {
   database: {
-    database: 'Capstone',
-    host: 'localhost',
+    connectionString: 'postgres://localhost:5432/Capstone'
   }
 })

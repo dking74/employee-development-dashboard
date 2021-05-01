@@ -1,26 +1,13 @@
--- Create 'capstone_user' role
-DROP ROLE IF EXISTS capstone_user;
-CREATE ROLE capstone_user WITH
-	LOGIN
-	NOSUPERUSER
-	NOCREATEDB
-	NOCREATEROLE
-	NOINHERIT
-	NOREPLICATION
-	CONNECTION LIMIT -1
-	PASSWORD 'xxxxxx';
-
 -- Create 'Capstone' database
-DROP DATABASE IF EXISTS "Capstone";
-CREATE DATABASE "Capstone"
-    WITH 
-    OWNER = postgres
-    ENCODING = 'UTF8'
-    TABLESPACE = pg_default
-    CONNECTION LIMIT = -1;
-COMMENT ON DATABASE "Capstone"
-    IS 'Capstone Database';
-GRANT TEMPORARY, CONNECT ON DATABASE "Capstone" TO capstone_user WITH GRANT OPTION;
+-- DROP DATABASE IF EXISTS "Capstone";
+-- CREATE DATABASE "Capstone"
+--     WITH 
+--     OWNER = postgres
+--     ENCODING = 'UTF8'
+--     TABLESPACE = pg_default
+--     CONNECTION LIMIT = -1;
+-- COMMENT ON DATABASE "Capstone"
+--     IS 'Capstone Database';
 
 -- Create 'UserStatus' type
 DROP TYPE IF EXISTS UserStatus CASCADE;
@@ -35,7 +22,7 @@ CREATE TABLE public."User"
     email text NOT NULL,
     first_name text NOT NULL,
     last_name text NOT NULL,
-    phone text DEFAULT ''
+    phone text DEFAULT '',
     status UserStatus NOT NULL,
     score bigint,
     CONSTRAINT user_id PRIMARY KEY (user_id)
@@ -45,8 +32,6 @@ CREATE TABLE public."User"
     CONSTRAINT "Score above 0" CHECK (score >= 0) NOT VALID
 )
 TABLESPACE pg_default;
-ALTER TABLE public."User"
-    OWNER to capstone_user;
 
 -- Create 'EventStatus' type
 DROP TYPE IF EXISTS EventStatus CASCADE;
@@ -66,14 +51,12 @@ CREATE TABLE public."Event"
     date date NOT NULL,
     status EventStatus NOT NULL,
     CONSTRAINT event_id PRIMARY KEY (event_id),
-    CONSTRAINT "Unique Title" UNIQUE (event_title),
+    CONSTRAINT "Unique Title" UNIQUE (title),
     CONSTRAINT "Num Registered GT 0" CHECK (num_registered >= 0) NOT VALID,
     CONSTRAINT "Capacity GT 0" CHECK (capacity >=0) NOT VALID,
     CONSTRAINT "Capacity GT Num Registered" CHECK (capacity >= num_registered) NOT VALID
 )
 TABLESPACE pg_default;
-ALTER TABLE public."Event"
-    OWNER to capstone_user;
 
 -- Create 'GoalStatus' type
 DROP TYPE IF EXISTS GoalStatus CASCADE;
@@ -88,7 +71,7 @@ CREATE TABLE public."Goal"
     summary text NOT NULL,
     to_be_completed_date date,
     completed_date date,
-    status 
+    status GoalStatus NOT NULL,
     CONSTRAINT goal_id PRIMARY KEY (goal_id),
     CONSTRAINT user_id FOREIGN KEY (user_id)
         REFERENCES public."User" (user_id) MATCH SIMPLE
@@ -96,8 +79,6 @@ CREATE TABLE public."Goal"
         ON DELETE CASCADE
 )
 TABLESPACE pg_default;
-ALTER TABLE public."Goal"
-    OWNER to capstone_user;
 
 -- Create 'Achievement' Table
 DROP TABLE IF EXISTS public."Achievement" CASCADE;
@@ -118,8 +99,6 @@ CREATE TABLE public."Achievement"
         ON DELETE NO ACTION
 )
 TABLESPACE pg_default;
-ALTER TABLE public."Achievement"
-    OWNER to capstone_user;
 
 -- Create 'Certification' Table
 DROP TABLE IF EXISTS public."Certification" CASCADE;
@@ -138,8 +117,6 @@ CREATE TABLE public."Certification"
         ON DELETE NO ACTION
 )
 TABLESPACE pg_default;
-ALTER TABLE public."Certification"
-    OWNER to capstone_user;
 
 -- Create 'Training' Table
 DROP TABLE IF EXISTS public."Training" CASCADE;
@@ -162,8 +139,6 @@ CREATE TABLE public."Training"
     CONSTRAINT "NumRatings GT 0" CHECK (num_ratings >= 0) NOT VALID
 )
 TABLESPACE pg_default;
-ALTER TABLE public."Training"
-    OWNER to capstone_user;
 
 -- Create 'UserEventStatus' type
 DROP TYPE IF EXISTS UserEventStatus CASCADE;
@@ -189,8 +164,6 @@ CREATE TABLE public."UserEvent"
         ON DELETE CASCADE
 )
 TABLESPACE pg_default;
-ALTER TABLE public."UserEvent"
-    OWNER to capstone_user;
 
 -- Create 'UserEventStatus' type
 DROP TYPE IF EXISTS UserTrainingStatus CASCADE;
@@ -216,5 +189,3 @@ CREATE TABLE public."UserTraining"
         ON DELETE CASCADE
 )
 TABLESPACE pg_default;
-ALTER TABLE public."UserTraining"
-    OWNER to capstone_user;

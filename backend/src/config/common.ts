@@ -11,9 +11,10 @@ export const mergeProperties = (object1: Object, object2: Object) => {
 export default {
   database: {
     // Required Properties
-    port: 5432,
-    user: process.env.PG_USERNAME,
-    password: process.env.PG_PASSWORD,
+    // port: 5432,
+    // user: process.env.PG_USERNAME,
+    // password: process.env.PG_PASSWORD,
+    connectionString: process.env.DATABASE_URL,
 
     // Optional Properties
     keepAlive: process.env.PG_KEEPALIVE || true,
