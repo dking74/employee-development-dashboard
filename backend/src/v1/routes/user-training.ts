@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 
 import {
     getAllUserTrainings,
@@ -7,17 +7,27 @@ import {
     updateUserTraining,
     deleteUserTraining
 } from '../controllers/user-trainings';
-import { UserTrainingQueryProperties } from '@constants';
+import { userTrainingQueryProperties } from '@constants';
 import asyncWrapper from '@utils/service.util';
 import convertQueryParameters from '../middleware/convertQueryParameters';
 import convertUserRequestBody from '../middleware/convertUserRequestBody';
-import validateUserTrainingExists from '../middleware/validations/validateTrainingId';
+import validateUserTrainingExists from '../middleware/validations/validateUserTrainingId';
 import validateBody, { createUserTrainingSchema, updateUserTrainingSchema } from '../validations';
 
+const convertUserTrainingBody = <T>(req: Request, res: Response, next: NextFunction) => {
+    const reqBody = {
+      ...req.requestBody,
+      training_id: req.params.trainingId
+    };
+    req.requestBody = ((reqBody as any) as T);
+  
+    return next();
+  };
+
 const router = Router({ mergeParams: true });
-router.get('', [convertQueryParameters(UserTrainingQueryProperties)], asyncWrapper(getAllUserTrainings));
+router.get('', [convertQueryParameters(userTrainingQueryProperties)], asyncWrapper(getAllUserTrainings));
 router.get('/:trainingId', [validateUserTrainingExists], asyncWrapper(getUserTraining));
-router.post('', [validateBody(createUserTrainingSchema), convertUserRequestBody], asyncWrapper(createUserTraining));
+router.post('/:trainingId', [validateBody(createUserTrainingSchema), convertUserRequestBody, convertUserTrainingBody], asyncWrapper(createUserTraining));
 router.put('/:trainingId', [validateUserTrainingExists, validateBody(updateUserTrainingSchema)], asyncWrapper(updateUserTraining));
 router.delete('/:trainingId', [validateUserTrainingExists], asyncWrapper(deleteUserTraining));
 

@@ -57,7 +57,7 @@ DROP TABLE IF EXISTS public."Event" CASCADE;
 CREATE TABLE public."Event"
 (
     event_id SERIAL NOT NULL,
-    event_title text NOT NULL,
+    title text NOT NULL,
     summary text,
     organizers text[],
     num_registered integer NOT NULL,
@@ -167,7 +167,7 @@ ALTER TABLE public."Training"
 
 -- Create 'UserEventStatus' type
 DROP TYPE IF EXISTS UserEventStatus CASCADE;
-CREATE TYPE UserEventStatus AS ENUM ('registered', 'interested', 'attended');
+CREATE TYPE UserEventStatus AS ENUM ('registered', 'interested', 'attended', 'deactive');
 
 -- Create 'UserEvent' Table
 DROP TABLE IF EXISTS public."UserEvent" CASCADE;

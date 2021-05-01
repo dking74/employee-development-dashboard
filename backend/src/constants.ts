@@ -2,7 +2,7 @@
 export const userStatus = [ 'active', 'inactive' ];
 export const goalStatus = [ 'submitted', 'pending', 'completed' ];
 export const eventStatus = [ 'open', 'pending', 'closed' ];
-export const userEventStatus = [ 'registered', 'interested', 'attended' ];
+export const userEventStatus = [ 'registered', 'interested', 'attended', 'deactive' ];
 export const userTrainingStatus = [ 'pending', 'interested', 'watched' ];
 
 /** Query Properties */
@@ -12,6 +12,8 @@ export const certificationQueryProperties = [ 'limit' ];
 export const goalQueryProperties = [ 'limit' ];
 export const eventQueryProperties = [ 'limit', 'status' ];
 export const trainingQueryProperties = [ 'limit', 'rating' ];
+export const userEventQueryProperties = [ 'status' ];
+export const userTrainingQueryProperties = [ 'status' ];
 export const userProperties = [
   'username',
   'email',
@@ -53,5 +55,7 @@ export default {
   goalQueryProperties,
   eventQueryProperties,
   trainingQueryProperties,
+  userEventQueryProperties,
+  userTrainingQueryProperties,
   trainingCategories,
 }

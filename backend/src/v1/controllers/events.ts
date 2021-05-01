@@ -16,7 +16,7 @@ export const getEvent = async (req: express.Request, res: express.Response) => {
 };
 
 export const createEvent = async (req: express.Request, res: express.Response) => {
-  const event: Event = req.requestBody;
+  const event: Event = req.body;
   const eventCreated = await eventServices.createEvent(event);
   res.status(201).json(eventCreated);
 };

@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 
 import v1 from './v1';
+import logger from './v1/middleware/logger';
 import errorHandler from './v1/middleware/errorHandler';
 
 const app = express();
@@ -11,6 +12,9 @@ app.use(cors());
 
 // Allow for Request body to be parsed w/ json
 app.use(express.json());
+
+// Log handler
+app.use(logger);
 
 // Attach v1 service endpoints to app
 app.use('/v1', v1);

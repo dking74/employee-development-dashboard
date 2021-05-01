@@ -32,7 +32,7 @@ export const filterKeyIdentifier = <T extends TableIdentifier>(constraints: T): 
   }, {});
 };
 
-export const constructUniqueQueryParameters = <T extends TableIdentifier>(uniqueConstraints: T): QueryParameters => {
+export const constructUniqueQueryParameters = <T extends TableIdentifier>(uniqueConstraints: T, joiner: IdentifierJoiner = 'OR'): QueryParameters => {
   const _queryParams = Object.keys(uniqueConstraints).reduce((prev: any, curr: string) => {
     const currentValue = uniqueConstraints[curr];
     if (!currentValue && typeof currentValue !== 'string') return prev;
@@ -43,7 +43,7 @@ export const constructUniqueQueryParameters = <T extends TableIdentifier>(unique
     return prev;
   }, { query: [], parameters: [] });
 
-  _queryParams.query = _queryParams.query.join(' OR ');
+  _queryParams.query = _queryParams.query.join(` ${joiner} `);
   return _queryParams;
 }
 

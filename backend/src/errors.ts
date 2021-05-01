@@ -24,6 +24,12 @@ export class BadRequestError extends BaseHttpError {
   }
 }
 
+export class NotFoundError extends BaseHttpError {
+  constructor(details: string = '') {
+    super(404, 'The request parameters was not able to produce an ouput', details);
+  }
+}
+
 export class InternalError extends BaseHttpError {
   constructor(message: string = '', details: string = '') {
     super(

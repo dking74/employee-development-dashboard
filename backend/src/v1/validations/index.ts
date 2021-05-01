@@ -8,6 +8,8 @@ import { createCertificationSchema, updateCertificationSchema } from './certific
 import { createGoalBodySchema, updateGoalBodySchema } from './goals';
 import { createEventBodySchema, updateEventBodySchema } from './events'; 
 import { createTrainingBodySchema, updateTrainingBodySchema } from './trainings';
+import { createUserEventSchema, updateUserEventSchema } from './user-events';
+import { createUserTrainingSchema, updateUserTrainingSchema } from './user-trainings';
 
 export const validateBody = (schema: ObjectSchema) => {
   return (req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -46,6 +48,14 @@ export {
   // Training Schemas
   createTrainingBodySchema,
   updateTrainingBodySchema,
+
+  // UserEvent Schemas
+  createUserEventSchema,
+  updateUserEventSchema,
+
+  // UserTraining Schemas
+  createUserTrainingSchema,
+  updateUserTrainingSchema,
 };
 
 export default validateBody;

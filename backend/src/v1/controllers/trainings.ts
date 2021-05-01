@@ -16,7 +16,7 @@ export const getTraining = async (req: express.Request, res: express.Response) =
 };
 
 export const createTraining = async (req: express.Request, res: express.Response) => {
-  const training: Training = req.requestBody;
+  const training: Training = req.body;
   const trainingCreated = await trainingServices.createTraining(training);
   res.status(201).json(trainingCreated);
 };

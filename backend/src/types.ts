@@ -106,6 +106,7 @@ export interface GoalIdentifier extends TableIdentifier {
 /**
  * Event parameters
  */
+export type EventStatus = (typeof constants.eventStatus)[number];
 export interface Event {
   title: string;
   summary: string;
@@ -113,10 +114,20 @@ export interface Event {
   num_registered: number;
   capacity: number;
   location: string;
+  date: string;
+  status: EventStatus;
 }
 export interface EventIdentifier extends TableIdentifier {
   event_id: string;
   title: string;
+}
+export interface UpdateEventRequest {
+  organizers?: Array<string>;
+  num_registered?: number;
+  capacity?: number;
+  location?: string;
+  date?: string;
+  status?: EventStatus;
 }
 
 /**
