@@ -1,3 +1,3 @@
 export default {
-  employeeDevelopmentApi: 'http://localhost:3000/v1',
+  employeeDevelopmentApi: 'https://employee-development-api.herokuapp.com/v1',
 }
