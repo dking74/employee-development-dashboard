@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 import Vue from 'vue';
 
 import IdleVue from 'idle-vue';
@@ -9,13 +11,10 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 import router from './router';
 import store from './store';
-import { Auth0Plugin } from "./auth";
-import { domain, clientId, /*audience*/ } from "../auth_config.json";
-
+import { Auth0Plugin } from './auth';
 import { formatDate } from './utils';
 
 import App from './App.vue';
-
 import './app.scss';
 
 Vue.config.productionTip = false;
@@ -31,8 +30,8 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 // Auth0 Plugin
 Vue.use(Auth0Plugin, {
-  domain,
-  clientId,
+  domain: process.env.VUE_APP_AUTH0_DOMAIN,
+  clientId: process.env.VUE_APP_AUTH0_CLIENTID,
   /* audience, */
   onRedirectCallback: appState => {
     router.push(
