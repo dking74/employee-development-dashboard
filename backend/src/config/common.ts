@@ -1,7 +1,8 @@
 import { merge, mergeWith, isObject, cloneDeep } from 'lodash';
 
 export const mergeProperties = (object1: Object, object2: Object) => {
-  return cloneDeep(mergeWith(object1, object2, (obj1, obj2) => {
+  const baseClone = cloneDeep(object1);
+  return cloneDeep(mergeWith(baseClone, object2, (obj1, obj2) => {
     if (isObject(obj1) && isObject(obj2)) {
       return merge(obj1, obj2);
     }

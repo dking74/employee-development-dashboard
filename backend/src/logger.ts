@@ -1,9 +1,10 @@
 import winston, { createLogger } from 'winston';
 
-const transport = new winston.transports.Console({
-  level: 'debug',
-  format: winston.format.simple()
-})
+const transport =  
+  new winston.transports.Console({
+    level: 'debug',
+    format: winston.format.simple()
+  });
 transport.on('connect', function(message: string) {
   logger && logger.info(message);
 });
