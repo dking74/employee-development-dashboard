@@ -5,10 +5,13 @@ import production from './production';
 const configOptions = { development, production };
 
 export type _Environment = 'development' | 'production';
-export default (environment?: _Environment): Config => {
+export const configGenerator = (environment?: _Environment): Config => {
   return (
     !!environment
     ? configOptions[environment as _Environment]
     : configOptions[(process.env.DEPLOYED_ENV || 'development') as _Environment]
   ) as Config;
-}
+};
+
+export const config = configGenerator();
+export default config;

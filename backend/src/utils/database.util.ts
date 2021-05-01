@@ -4,7 +4,7 @@ import { to } from 'await-to-js';
 import config from '../config';
 import { InternalError } from '../errors';
 
-const pool = new Pool(config()?.database);
+const pool = new Pool(config?.database);
 
 /**
  * Query

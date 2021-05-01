@@ -1,4 +1,5 @@
 import Vue from 'vue';
+
 import IdleVue from 'idle-vue';
 import { BootstrapVue, IconsPlugin, ToastPlugin } from 'bootstrap-vue';
 
@@ -11,11 +12,11 @@ import store from './store';
 import { Auth0Plugin } from "./auth";
 import { domain, clientId, /*audience*/ } from "../auth_config.json";
 
+import { formatDate } from './utils';
+
 import App from './App.vue';
 
 import './app.scss';
-import 'vue-slick-carousel/dist/vue-slick-carousel.css';
-import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css';
 
 Vue.config.productionTip = false;
 
@@ -49,6 +50,9 @@ Vue.use(IdleVue, {
   idleTime: 900000, // 15 minutes
   startAtIdle: false
 });
+
+// Add directive to be able to format a date value
+Vue.filter('formatDate', formatDate);
 
 new Vue({
   router,

@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "NODE_ENV=development vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "serve-prod": "http-server-spa ./dist index.html $PORT"
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.14.0",
@@ -13,11 +14,13 @@
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
     "express-jwt": "^6.0.0",
+    "http-server-spa": "^1.3.0",
     "idle-vue": "^2.0.5",
     "jwks-rsa": "^2.0.2",
+    "moment": "^2.29.1",
     "vue": "^2.6.11",
+    "vue-carousel": "^0.18.0",
     "vue-router": "^3.2.0",
-    "vue-slick-carousel": "^1.0.6",
     "vuex": "^3.4.0"
   },
   "devDependencies": {
@@ -31,6 +34,7 @@
     "eslint-plugin-vue": "^6.2.2",
     "node-sass": "^5.0.0",
     "sass-loader": "^10.1.1",
+    "vue-cli-plugin-cloudinary": "0.0.6",
     "vue-cli-plugin-vuetify": "~2.3.1",
     "vue-template-compiler": "^2.6.11"
   },

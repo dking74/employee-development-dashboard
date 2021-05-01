@@ -17,7 +17,6 @@
           <b-nav-item v-bind="getLinkProps('my-career/achievements', 'Achievements')">Achievements</b-nav-item>
           <b-nav-item v-bind="getLinkProps('my-career/goals', 'Goals')">Goals</b-nav-item>
           <b-nav-item v-bind="getLinkProps('my-career/certifications', 'Certifications')">Certifications</b-nav-item>
-          <b-nav-item v-bind="getLinkProps('my-career/documents', 'Documents')">Documents</b-nav-item>
         </div>
         <b-nav-item v-bind="getLinkProps('events', 'Events')">Events</b-nav-item>
         <b-nav-item v-bind="getLinkProps('learning', 'Learning')">Learning</b-nav-item>

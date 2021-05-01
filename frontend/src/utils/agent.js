@@ -1,9 +1,16 @@
 import axios from 'axios';
 import { to } from 'await-to-js';
+import { isEmpty } from 'lodash';
 
 import config from '../config';
 
 const Axios = axios.create();
+
+const getQueryParameters = (queryParams) => {
+  if (isEmpty(queryParams)) return '';
+
+  return `?${Object.keys(queryParams).map((val) => `${val}=${queryParams[val]}`).join('&')}`;
+};
 
 export const getUser = async (email) => {
   const url = `${config.employeeDevelopmentApi}/users/${email}`;
@@ -64,6 +71,87 @@ export const deleteAchievement = async (userId, achievementId) => {
   return results.data;
 };
 
+export const getGoals = async (userId) => {
+  const url = `${config.employeeDevelopmentApi}/users/${userId}/goals`;
+  const [error, results] = await to(Axios.get(url));
+  if (error) {
+    throw new Error(`Unable to retrieve goals for user: '${userId}'`);
+  }
+
+  return results.data;
+};
+
+export const getGoal = async (userId, goalId) => {
+  const url = `${config.employeeDevelopmentApi}/users/${userId}/goals/${goalId}`;
+  const [error, results] = await to(Axios.get(url));
+  if (error) {
+    throw new Error(`Unable to retrieve goal: '${goalId}' for user: '${userId}'`);
+  }
+
+  return results.data;
+};
+
+export const deleteGoal = async (userId, goalId) => {
+  const url = `${config.employeeDevelopmentApi}/users/${userId}/goals/${goalId}`;
+  const [error, results] = await to(Axios.delete(url));
+  if (error) {
+    throw new Error(`Unable to delete goal: '${goalId}' for user: '${userId}'`);
+  }
+
+  return results.data;
+};
+
+
+export const getCertifications = async (userId) => {
+  const url = `${config.employeeDevelopmentApi}/users/${userId}/certifications`;
+  const [error, results] = await to(Axios.get(url));
+  if (error) {
+    throw new Error(`Unable to retrieve certifications for user: '${userId}'`);
+  }
+
+  return results.data;
+};
+
+export const getCertification = async (userId, certificationId) => {
+  const url = `${config.employeeDevelopmentApi}/users/${userId}/certifications/${certificationId}`;
+  const [error, results] = await to(Axios.get(url));
+  if (error) {
+    throw new Error(`Unable to retrieve certification: '${certificationId}' for user: '${userId}'`);
+  }
+
+  return results.data;
+};
+
+export const deleteCertification = async (userId, certificationId) => {
+  const url = `${config.employeeDevelopmentApi}/users/${userId}/certifications/${certificationId}`;
+  const [error, results] = await to(Axios.delete(url));
+  if (error) {
+    throw new Error(`Unable to delete certification: '${certificationId}' for user: '${userId}'`);
+  }
+
+  return results.data;
+};
+
+export const createCertification = async (userId, certBody) => {
+  const url = `${config.employeeDevelopmentApi}/users/${userId}/certifications`;
+  const [error, results] = await to(Axios.post(url, certBody));
+  if (error) {
+    throw new Error(`Unable to create certification for user: '${userId}'`);
+  }
+
+  return results.data;
+};
+
+export const updateCertification = async (userId, certId, certBody) => {
+  const url = `${config.employeeDevelopmentApi}/users/${userId}/certifications/${certId}`;
+  const [error, results] = await to(Axios.put(url, certBody));
+  if (error) {
+    throw new Error(`Unable to update certification '${certId}' for user: '${userId}'`);
+  }
+
+  return results.data;
+};
+
 /**
  * @note This should only be used inside of the Form component 
  * @param {*} url
@@ -76,7 +164,107 @@ export const submitForm = async (resourceUrl, data, add = true) => {
   );
   
   return !!error;
-}
+};
+
+export const getTrainingVideos = async ({ limit = null, rating = null }) => {
+  const queryUrl = getQueryParameters({ limit, rating });
+  const url = `${config.employeeDevelopmentApi}/trainings${queryUrl}`;
+  const [error, results] = await to(Axios.get(url));
+  if (error) {
+    throw new Error('Unable to get training videos');
+  }
+
+  return results.data;
+};
+
+export const getUserTrainingVideos = async () => {
+  // const url = `${config.employeeDevelopmentApi}/`;
+};
+
+export const getEvents = async ({ limit = null, status = null }) => {
+  const queryUrl = getQueryParameters({ limit, status });
+  const url = `${config.employeeDevelopmentApi}/events${queryUrl}`;
+  const [error, results] = await to(Axios.get(url));
+  if (error) {
+    throw new Error('Unable to get events');
+  }
+
+  return results.data;
+};
+
+export const getUserEvents = async (userId, { limit = null, status = null } = { limit: null, status: null }) => {
+  const queryUrl = (limit || status) ? getQueryParameters({ limit, status }) : '';
+  const url = `${config.employeeDevelopmentApi}/users/${userId}/events${queryUrl}`;
+  const [error, results] = await to(Axios.get(url));
+  if (error) {
+    throw new Error(`Unable to retrieve user events for user: '${userId}'`);
+  }
+
+  return results.data;
+};
+
+export const getUserEvent = async (userId, eventId) => {
+  const url = `${config.employeeDevelopmentApi}/users/${userId}/events/${eventId}`;
+  const [error, results] = await to(Axios.get(url));
+  if (error) {
+    console.log(`Unable to retrieve user events for user: '${userId}'`);
+    return { status: 'inactive' };
+  }
+
+  return results.data;
+};
+
+export const getEvent = async (eventId) => {
+  const url = `${config.employeeDevelopmentApi}/events/${eventId}`;
+  const [error, results] = await to(Axios.get(url));
+  if (error) {
+    throw new Error(`Unable to retrieve event: '${eventId}'`);
+  }
+
+  return results.data;
+};
+
+export const createUserEvent = async (userEvent) => {
+  const { userId, eventId, ...event } = userEvent;
+  const url = `${config.employeeDevelopmentApi}/users/${userId}/events/${eventId}`;
+  const [error, results] = await to(Axios.post(url, event));
+  if (error) {
+    throw new Error(`Unable to create user event for user: '${userId}' and event: '${eventId}'`);
+  }
+
+  return results.data;
+};
+
+export const updateUserEvent = async (userEvent) => {
+  const { userId, eventId, ...event } = userEvent;
+  const url = `${config.employeeDevelopmentApi}/users/${userId}/events/${eventId}`;
+  const [error, results] = await to(Axios.put(url, event));
+  if (error) {
+    throw new Error(`Unable to update user event for user: '${userId}' and event: '${eventId}'`);
+  }
+
+  return results.data;
+};
+
+export const uploadFiles = async (files) => {
+  const UPLOAD_ENDPOINT = `https://api.cloudinary.com/v1_1/${process.env.VUE_APP_CLOUDINARY_CLOUD_NAME}/upload`;
+
+  const uploadedDocs = await Promise.all(files.map(file => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "mpsmjyhw");
+
+    return axios.post(UPLOAD_ENDPOINT, formData, {
+      headers: { "Content-Type": "multipart/form-data" }
+    })
+  }));
+
+  return uploadedDocs.reduce((doc, curr) => {
+    const document = curr.data;
+    doc[document.original_filename] = document.url;
+    return doc;
+  }, {});
+};
 
 export default {
   getUser,
@@ -85,5 +273,21 @@ export default {
   getAchievements,
   getAchievement,
   deleteAchievement,
+  getGoals,
+  getGoal,
+  deleteGoal,
+  createCertification,
+  updateCertification,
+  getCertifications,
+  getCertification,
+  deleteCertification,
   submitForm,
+  getTrainingVideos,
+  getEvents,
+  getEvent,
+  getUserEvents,
+  getUserEvent,
+  createUserEvent,
+  updateUserEvent,
+  uploadFiles,
 };

@@ -1,8 +1,8 @@
 <template>
   <b-card
-    border-variant="primary"
+    :border-variant="headerColorClass || 'primary'"
     header="Primary"
-    header-bg-variant="primary"
+    :header-bg-variant="headerColorClass || 'primary'"
     header-text-variant="white"
     align="left"
     class="ed-card"
@@ -19,6 +19,7 @@
       <b-table stickyColumn responsive sticky-header 
           :items="adjustedData"
           :fields="adjustedHeaders"
+          :tdAttr="{ height: '25px'}"
           v-bind="tableProps"
           @row-clicked="editItem"
       >
@@ -30,7 +31,7 @@
       </b-table>
     </template>
     <template v-else>
-      There are no {{ title.toLowerCase() }} present at this time
+      There are no details present at this time for "{{ title.toLowerCase() }}"
     </template>
   </b-card>
 </template>
@@ -48,6 +49,10 @@ export default {
     this.adjustHeaders();
   },
   props: {
+    headerColorClass: {
+      required: false,
+      type: String
+    },
     title: {
       required: true,
       type: String
@@ -137,6 +142,14 @@ export default {
     thead tr th {
       vertical-align: middle;
       white-space: nowrap;
+    }
+
+    tbody tr {
+      height: 50px;
+
+      td, th {
+        width: 20px;
+      }
     }
   }
 }
