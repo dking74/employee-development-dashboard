@@ -17,7 +17,7 @@ router.use('/users/:userId/achievements', [validateUserId], achievements);
 router.use('/users/:userId/certifications', [validateUserId], certifications);
 router.use('/users/:userId/goals', [validateUserId], goals);
 router.use('/users/:userId/events', [validateUserId], userEvents);
-router.use('/users/:userId/training', [validateUserId], userTraining);
+router.use('/users/:userId/trainings', [validateUserId], userTraining);
 
 router.use('/events', events);
 router.use('/trainings', trainings);

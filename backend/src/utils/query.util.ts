@@ -1,9 +1,9 @@
-import { QueryObject, QueryParameters, TableIdentifier } from '@types';
+import { QueryObject, QueryParameters, TableIdentifier, JoinParameters } from '@types';
 import { isEmpty } from 'lodash';
 
 type IdentifierJoiner = 'AND' | 'OR';
 
-export const getQueryParameters = <T extends QueryObject>(object: T, validKeys: Array<string> = [], keySignMapping: { [key: string]: string } = {}): QueryParameters => {
+export const getQueryParameters = <T extends QueryObject>(object: T, validKeys: Array<string> = [], keySignMapping: { [key: string]: string } = {}, baseTableName: string = ''): QueryParameters => {
   let queryIndex = 1;
   const _queryParams = Object.keys(object).reduce((prev: any, curr: string) => {
     if (validKeys.length > 0 && !validKeys.includes(curr)) return prev;
@@ -11,8 +11,9 @@ export const getQueryParameters = <T extends QueryObject>(object: T, validKeys: 
     if (curr === 'limit') {
       prev['limit'] = object['limit'];
     } else if (validKeys.includes(curr)) {
-      const signComparison = !isEmpty(keySignMapping) ? keySignMapping[curr] || '=' : '='; 
-      prev['query'].push(`${curr} ${signComparison} $${queryIndex}`);
+      const signComparison = !isEmpty(keySignMapping) ? keySignMapping[curr] || '=' : '=';
+      const parameter = baseTableName ? `${baseTableName}.${curr}`: curr;
+      prev['query'].push(`${parameter} ${signComparison} $${queryIndex}`);
       prev['parameters'].push(object[curr]);
       queryIndex++;
     }
@@ -98,12 +99,16 @@ export const constructFilteredIdentifierString = <T extends TableIdentifier>(ide
   return `WHERE ${identifierString}`;
 };
 
-export const PostgresQuery = (tableName: string, properties: Array<string> = [], namespace = 'public') => {
+export const PostgresQuery = (tableName: string, joinParameters: JoinParameters = {}, properties: Array<string> = [], namespace = 'public') => {
+  const baseTableName = getTableName(tableName, namespace);
   const _propsString = properties.length > 0
     ? properties.join(',')
     : '*';
 
-  return `SELECT ${_propsString} FROM ${getTableName(tableName, namespace)}`;
+  const joinedQuery = (!isEmpty(joinParameters))
+    ? `INNER JOIN ${getTableName(joinParameters.joinTable as string, namespace)} ON ${baseTableName}.${joinParameters.joinProp} = ${getTableName(joinParameters.joinTable as string, namespace)}.${joinParameters.joinProp}`
+    : '';
+  return `SELECT ${_propsString} FROM ${baseTableName} ${joinedQuery}`;
 };
 
 export const PostgresInsert = <T>(tableName: string, properties: T, namespace: string = 'public') => {

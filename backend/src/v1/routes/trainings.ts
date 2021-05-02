@@ -14,7 +14,7 @@ import validateTrainingExists from '../middleware/validations/validateTrainingId
 import validateBody, { createTrainingBodySchema, updateTrainingBodySchema } from '../validations';
 
 const router = Router({ mergeParams: true });
-router.get('', [convertQueryParameters(trainingQueryProperties, { rating: '>' })], asyncWrapper(getAllTrainings));
+router.get('', [convertQueryParameters(trainingQueryProperties, '', { rating: '>' })], asyncWrapper(getAllTrainings));
 router.get('/:trainingId', [validateTrainingExists], asyncWrapper(getTraining));
 router.post('', [validateBody(createTrainingBodySchema)], asyncWrapper(createTraining));
 router.put('/:trainingId', [validateTrainingExists, validateBody(updateTrainingBodySchema)], asyncWrapper(updateTraining));

@@ -4,7 +4,20 @@ import { UserEvent, QueryParameters} from '@types';
 import { BadRequestError, InternalError } from '@http-errors';
 
 export const getAllUserEvents = async (queryParams: QueryParameters): Promise<UserEvent[]> => {
-  const _query = constuctFilteredQuery(PostgresQuery('UserEvent'), queryParams);
+  const _query = constuctFilteredQuery(PostgresQuery('UserEvent', {
+    joinTable: 'Event',
+    joinProp: 'event_id'
+  }, [
+    'public."UserEvent".user_id',
+    'public."Event".event_id',
+    'public."Event".title',
+    'public."Event".summary',
+    'public."Event".location',
+    'public."Event".date',
+    'public."Event".num_registered',
+    'public."Event".capacity',
+    'public."UserEvent".status'
+  ]), queryParams);
   return await query(_query.query, _query.parameters);
 };
 

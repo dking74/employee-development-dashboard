@@ -89,7 +89,8 @@ export default {
   width: 50px;
   top: 0;
   bottom: 0;
-  position: absolute;
+  position: fixed;
+  z-index: 5000;
   background-color: var(--primary, blue);
   box-shadow: 0 0 5px 1px black;
 

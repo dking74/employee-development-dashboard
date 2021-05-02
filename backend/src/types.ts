@@ -16,6 +16,12 @@ export interface PostgresConfig {
   connectionTimeoutMillis?: number;
 }
 
+export interface JoinParameters {
+  joinTable?: string;
+  joinProp?: string;
+  joinedProps?: string[];
+}
+
 /**
  * Base query parameters
  */

@@ -4,12 +4,18 @@ import { UserTraining, QueryParameters} from '@types';
 import { BadRequestError, InternalError } from '@http-errors';
 
 export const getAllUserTrainings = async (queryParams: QueryParameters): Promise<UserTraining[]> => {
-  const _query = constuctFilteredQuery(PostgresQuery('UserTraining'), queryParams);
+  const _query = constuctFilteredQuery(PostgresQuery('UserTraining', {
+    joinTable: 'Training',
+    joinProp: 'training_id'
+  }), queryParams);
   return await query(_query.query, _query.parameters);
 };
 
 export const getUserTraining = async (userId: string, trainingId: string): Promise<UserTraining> => {
-  const _query = constuctFilteredQuery(PostgresQuery('UserTraining'), constructUniqueQueryParameters({ user_id: parseInt(userId), training_id: parseInt(trainingId) }));
+  const _query = constuctFilteredQuery(PostgresQuery('UserTraining', {
+    joinTable: 'Training',
+    joinProp: 'training_id'
+  }), constructUniqueQueryParameters({ user_id: parseInt(userId), training_id: parseInt(trainingId) }));
   const userTraining = await query(_query.query, _query.parameters);
   if (userTraining.length === 0) {
     throw new BadRequestError(`Could not find the userTraining with userId: '${userId}' and trainingId: '${trainingId}'`);

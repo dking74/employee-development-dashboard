@@ -25,7 +25,7 @@ const convertUserEventBody = <T>(req: Request, res: Response, next: NextFunction
 };
 
 const router = Router({ mergeParams: true });
-router.get('', [convertQueryParameters(userEventQueryProperties)], asyncWrapper(getAllUserEvents));
+router.get('', [convertQueryParameters(userEventQueryProperties, 'public."UserEvent"')], asyncWrapper(getAllUserEvents));
 router.get('/:eventId', [validateUserEventExists], asyncWrapper(getUserEvent));
 router.post('/:eventId', [validateBody(createUserEventSchema), convertUserRequestBody, convertUserEventBody], asyncWrapper(createUserEvent));
 router.put('/:eventId', [validateUserEventExists, validateBody(updateUserEventSchema)], asyncWrapper(updateUserEvent));

@@ -25,7 +25,7 @@ const convertUserTrainingBody = <T>(req: Request, res: Response, next: NextFunct
   };
 
 const router = Router({ mergeParams: true });
-router.get('', [convertQueryParameters(userTrainingQueryProperties)], asyncWrapper(getAllUserTrainings));
+router.get('', [convertQueryParameters(userTrainingQueryProperties, 'public."UserTraining"')], asyncWrapper(getAllUserTrainings));
 router.get('/:trainingId', [validateUserTrainingExists], asyncWrapper(getUserTraining));
 router.post('/:trainingId', [validateBody(createUserTrainingSchema), convertUserRequestBody, convertUserTrainingBody], asyncWrapper(createUserTraining));
 router.put('/:trainingId', [validateUserTrainingExists, validateBody(updateUserTrainingSchema)], asyncWrapper(updateUserTraining));
