@@ -17,11 +17,11 @@
       </template>
     </ed-carousel-card>
 
-        <!-- Users vidoes they are currently watching -->
+    <!-- Users vidoes they are interested in -->
     <ed-carousel-card
-      cardTitle='All videos'
-      errorText="No current videos available to watch"
-      :items="trainingVideos"
+      cardTitle='Interested Videos'
+      errorText="You do not have any current videos you are interested in."
+      :items="userInterestedVideos"
     >
       <template v-slot:default="slotProps">
         <ed-video-player
@@ -30,11 +30,56 @@
         ></ed-video-player>
       </template>
     </ed-carousel-card>
+
+        <!-- Users vidoes they have completed -->
+    <ed-carousel-card
+      cardTitle='Completed Videos'
+      errorText="You do not have any videos you have recently completed."
+      :items="userCompletedVideos"
+    >
+      <template v-slot:default="slotProps">
+        <ed-video-player
+          :videoId="slotProps.item.training_id"
+          :url="slotProps.item.url"
+        ></ed-video-player>
+      </template>
+    </ed-carousel-card>
+
+    <!-- Users vidoes that are most watched -->
+    <ed-carousel-card
+      cardTitle='Most-watched videos'
+      errorText="No most-watched videos available to watch"
+      :items="mostPopularVideos"
+    >
+      <template v-slot:default="slotProps">
+        <ed-video-player
+          :videoId="slotProps.item.training_id"
+          :url="slotProps.item.url"
+          showInterested
+        ></ed-video-player>
+      </template>
+    </ed-carousel-card>
+
+    <!-- Users vidoes that are highly rated -->
+    <ed-carousel-card
+      cardTitle='Highest-rated videos'
+      errorText="No popular videos available to watch"
+      :items="highestRatedVideos"
+    >
+      <template v-slot:default="slotProps">
+        <ed-video-player
+          :videoId="slotProps.item.training_id"
+          :url="slotProps.item.url"
+          showInterested
+        ></ed-video-player>
+      </template>
+    </ed-carousel-card>
   </div>
 </template>
 
 <script>
 import agent from '../../utils/agent';
+import { cloneDeep } from 'lodash';
 
 import EdSearchFilter from '../../components/SearchFilter';
 import EdVideoPlayer from '../../components/VideoPlayer';
@@ -49,26 +94,47 @@ export default {
   },
   data: () => ({
     trainingVideos: [],
+    mostPopularVideos: [],
+    highestRatedVideos: [],
     userTrainingVideos: [],
     userInProgressVideos: [],
+    userInterestedVideos: [],
+    userCompletedVideos: []
   }),
   methods: {
     async getAllTrainingVideos() {
       this.trainingVideos = await agent.getTrainingVideos();
     },
-    // async getMostWatchedVideos() {
-    //   agent.getTrainingVideos({ })
-    // },
+    async getMostWatchedVideos() {
+      const _videos = cloneDeep(this.trainingVideos);
+      this.mostPopularVideos = _videos.sort(video => video.views).slice(0, 10);
+    },
+    async getHighestRatedVideos() {
+      const _videos = cloneDeep(this.trainingVideos);
+      this.highestRatedVideos = _videos.filter(video => video.rating > 0).sort(video => video.rating).slice(0, 10);
+    },
     async getUserTrainingVideos() {
       this.userTrainingVideos = await this.getUserTrainings();
     },
     getUserInProgressVideos() {
       this.userInProgressVideos = this.userTrainingVideos.filter(video => video.status === 'pending');
     },
+    getUserInterestedVideos() {
+      this.userInterestedVideos = this.userTrainingVideos.filter(video => video.status === 'interested');
+    },
+    getUserCompletedVideos() {
+      this.userCompletedVideos = this.userTrainingVideos.filter(video => video.status === 'watched');
+    }
   },
   watch: {
+    trainingVideos() {
+      this.getMostWatchedVideos();
+      this.getHighestRatedVideos();
+    },
     userTrainingVideos() {
       this.getUserInProgressVideos();
+      this.getUserInterestedVideos();
+      this.getUserCompletedVideos();
     }
   },
   mixins: [UserMixin],

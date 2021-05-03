@@ -9,8 +9,8 @@
         ></iframe>
       </div>
     </vue-plyr>
-    <div class='ed-interest-button' v-if="showInterested">
-      <b-button block variant="success" class="mt-3">Add as interested</b-button>
+    <div class='ed-interest-button' v-if="canShowInterested">
+      <b-button block variant="success" class="mt-3" @click="updateInterest">Add as interested</b-button>
     </div>
   </div>
 </template>
@@ -23,9 +23,14 @@ import UserMixin from '../mixins/user.mixin';
 export default {
   name: 'ed-video-player',
   mounted() {
+    this.getUserTrainingVideos();
+
     this.$refs.videoPlayer.player.on('playing', ($event) => this.playVideo($event));
     this.$refs.videoPlayer.player.on('ended', ($event) => this.endVideo($event));
   },
+  data: () => ({
+    userTrainingVideos: []
+  }),
   props: {
     videoId: {
       type: Number,
@@ -41,15 +46,31 @@ export default {
       default: false
     }
   },
+  computed: {
+    canShowInterested() {
+      return this.showInterested && !this.userTrainingVideos.some(training =>
+        training.training_id === this.videoId
+      );
+    }
+  },
   methods: {
+    async getUserTrainingVideos() {
+      // If we don't want to show button, there is no need to get new data
+      this.userTrainingVideos = this.showInterested ? await this.getUserTrainings() : [];
+    },
+    updateInterest() {
+      return this.updateUserTrainingStatus(this.videoId, 'interested')
+        .then(() => window.location.reload());
+    },
     playVideo() {
-      return Promise.all[
+      return Promise.all([
         this.updateUserTrainingStatus(this.videoId, 'pending'),
         agent.updateTrainingViews(this.videoId)
-      ];
+      ]).then(() => window.location.reload());
     },
     endVideo() {
-      return this.updateUserTrainingStatus(this.videoId, 'watched');
+      return this.updateUserTrainingStatus(this.videoId, 'watched')
+        .then(() => window.location.reload());
     },
   },
   mixins: [UserMixin]
