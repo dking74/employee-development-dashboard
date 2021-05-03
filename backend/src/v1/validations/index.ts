@@ -7,7 +7,7 @@ import { createAchievementSchema, updateAchievementSchema } from './achievements
 import { createCertificationSchema, updateCertificationSchema } from './certifications';
 import { createGoalBodySchema, updateGoalBodySchema } from './goals';
 import { createEventBodySchema, updateEventBodySchema } from './events'; 
-import { createTrainingBodySchema, updateTrainingBodySchema } from './trainings';
+import { createTrainingBodySchema, updateTrainingBodySchema, updateTrainingRatingBodySchema } from './trainings';
 import { createUserEventSchema, updateUserEventSchema } from './user-events';
 import { createUserTrainingSchema, updateUserTrainingSchema } from './user-trainings';
 
@@ -48,6 +48,7 @@ export {
   // Training Schemas
   createTrainingBodySchema,
   updateTrainingBodySchema,
+  updateTrainingRatingBodySchema,
 
   // UserEvent Schemas
   createUserEventSchema,

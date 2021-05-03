@@ -16,16 +16,24 @@ export const getUserTraining = async (req: express.Request, res: express.Respons
 };
 
 export const createUserTraining = async (req: express.Request, res: express.Response) => {
-  const userTraining: UserTraining = req.body;
+  const userTraining: UserTraining = req.requestBody;
   const userTrainingCreated = await userTrainingServices.createUserTraining(userTraining);
   res.status(201).json(userTrainingCreated);
 };
 
 export const updateUserTraining = async (req: express.Request, res: express.Response) => {
+  const userId = req.params.userId;
   const trainingId: string = req.params.trainingId;
   const userTrainingUpdateParams: UserTraining = req.body;
-  const userTrainingUpdated = await userTrainingServices.updateUserTraining(req.params.userId, trainingId, userTrainingUpdateParams);
-  res.status(200).json(userTrainingUpdated);
+
+  const isTrainingExists = await userTrainingServices.isUserTrainingExist(userId, trainingId);
+  if (!isTrainingExists) {
+    const userTrainingCreated = await userTrainingServices.createUserTraining(userTrainingUpdateParams);
+    res.status(201).json(userTrainingCreated);
+  } else {
+    const updateTraining = await userTrainingServices.updateUserTraining(userId, trainingId, userTrainingUpdateParams);
+    res.status(200).json(updateTraining);
+  }
 };
 
 export const deleteUserTraining = async (req: express.Request, res: express.Response) => {

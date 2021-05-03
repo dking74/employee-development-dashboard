@@ -28,6 +28,19 @@ export const updateTraining = async (req: express.Request, res: express.Response
   res.status(200).json(trainingUpdated);
 };
 
+export const updateTrainingRating = async (req: express.Request, res: express.Response) => {
+  const trainingId: string = req.params.trainingId;
+  const { rating } = req.body;
+  const trainingUpdated = await trainingServices.updateTrainingRating(trainingId, rating);
+  res.status(200).json(trainingUpdated);
+};
+
+export const updateTrainingViews = async (req: express.Request, res: express.Response) => {
+  const trainingId: string = req.params.trainingId;
+  const trainingUpdated = await trainingServices.updateTrainingViews(trainingId);
+  res.status(200).json(trainingUpdated);
+};
+
 export const deleteTraining = async (req: express.Request, res: express.Response) => {
   const trainingId: string = req.params.trainingId;
   await trainingServices.deleteTraining(trainingId);
@@ -39,5 +52,7 @@ export default {
   getTraining,
   createTraining,
   updateTraining,
+  updateTrainingRating,
+  updateTrainingViews,
   deleteTraining
 }

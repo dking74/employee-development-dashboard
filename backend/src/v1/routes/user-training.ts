@@ -28,7 +28,7 @@ const router = Router({ mergeParams: true });
 router.get('', [convertQueryParameters(userTrainingQueryProperties, 'public."UserTraining"')], asyncWrapper(getAllUserTrainings));
 router.get('/:trainingId', [validateUserTrainingExists], asyncWrapper(getUserTraining));
 router.post('/:trainingId', [validateBody(createUserTrainingSchema), convertUserRequestBody, convertUserTrainingBody], asyncWrapper(createUserTraining));
-router.put('/:trainingId', [validateUserTrainingExists, validateBody(updateUserTrainingSchema)], asyncWrapper(updateUserTraining));
+router.put('/:trainingId', [validateBody(updateUserTrainingSchema)], asyncWrapper(updateUserTraining));
 router.delete('/:trainingId', [validateUserTrainingExists], asyncWrapper(deleteUserTraining));
 
 export default router;

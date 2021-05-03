@@ -144,14 +144,21 @@ export interface Training {
   title: string;
   url: string;
   keywords: Array<string>;
-  categories: Array<TrainingCategory>;
+  category: TrainingCategory;
   views: number;
   rating: number;
-  numRatings: number;
+  num_ratings: number;
+  total_ratings_score: number;
 }
 export interface TrainingIdentifier extends TableIdentifier {
   training_id: string;
   title: string;
+}
+
+export interface UpdateTrainingRating {
+  rating: number;
+  num_ratings: number;
+  total_ratings_score: number;
 }
 
 /**
