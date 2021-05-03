@@ -64,7 +64,7 @@ export const updateTrainingRating = async (trainingId: string, rating: number): 
 export const updateTrainingViews = async (trainingId: string): Promise<Training> => {
   const { views } = await getTraining(trainingId);
   const trainingIdentifier = filterKeyIdentifier({ training_id: parseInt(trainingId) });
-  const _query = constructUpdateQuery('Training', trainingIdentifier, { views });
+  const _query = constructUpdateQuery('Training', trainingIdentifier, { views: views + 1 });
   const trainingUpdated = await query(_query.query, _query.parameters);
   if (trainingUpdated.length === 0) {
     throw new InternalError('Unable to update the training views');
