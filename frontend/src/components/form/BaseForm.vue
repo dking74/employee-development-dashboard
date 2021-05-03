@@ -1,18 +1,5 @@
 <template>
-  <b-container fluid>
-    <b-row align-h="start">
-      <b-col cols="12" class="mb-3">
-        <slot name="title"></slot>
-      </b-col>
-    </b-row>
-    <b-row align-h="start">
-      <b-col cols="6" cols-sm="4" cols-md="2" class="mb-5">
-        <b-button variant="outline-primary" @click="goBack">
-          <font-awesome-icon :icon="goBackIcon" />
-          Go Back
-        </b-button>
-      </b-col>
-    </b-row>
+  <ed-content-screen>
     <b-row align-h="start" class="mb-5"> 
       <b-col cols="12">
         <b-form @submit="submitFunc" @reset="clearFunc">
@@ -26,11 +13,11 @@
         </b-form>
       </b-col>
     </b-row>
-  </b-container>
+  </ed-content-screen>
 </template>
 
 <script>
-import { faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
+import EdContentScreen from '../ContentScreen';
 
 export default {
   name: 'ed-base-form',
@@ -46,16 +33,7 @@ export default {
       default: () => {}
     }
   },
-  computed: {
-    goBackIcon() {
-      return faArrowCircleLeft;
-    }
-  },
-  methods: {
-    goBack() {
-      return this.$router.go(-1);
-    }
-  },
+  components: { EdContentScreen }
 }
 </script>
 

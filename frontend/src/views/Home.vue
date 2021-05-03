@@ -109,10 +109,21 @@ export default {
   text-align: left;
   margin-bottom: 25px;
   width: 100%;
-  cursor: pointer;
+
+  .card-body .card {
+    .list-group .list-group-item {
+      *:first-child {
+        font-weight: bold;
+      }
+      padding-bottom: 5px;
+      padding-top: 5px;
+    }
+  }
 }
 
-.home {
+.home,
+.ed-events,
+.ed-training {
   .slick-prev, .slick-next {
     background-color: var(--primary, blue);
   }
@@ -127,7 +138,7 @@ export default {
 
       .list-group .list-group-item {
         border: none;
-        padding: 5px;
+        padding: 0px;
         *:first-child {
           text-decoration: underline;
           font-weight: bold;

@@ -143,3 +143,23 @@ export const certificationObjectMapping = {
   description: 'description',
   attachment_url: 'attachment_url',
 };
+
+export const trainingCategories = [
+  'angular',
+  'vue',
+  'react',
+  'java',
+  'spring',
+  'data',
+  'analytics',
+  'software',
+  'c',
+  'c++',
+  'python',
+  'rust',
+  'numpy',
+  'c#',
+  'windows',
+  'linux',
+  'mac',
+];

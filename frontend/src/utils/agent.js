@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { to } from 'await-to-js';
-import { isEmpty } from 'lodash';
+import { isEmpty, isNull } from 'lodash';
 
 import config from '../config';
 
@@ -9,7 +9,7 @@ const Axios = axios.create();
 const getQueryParameters = (queryParams) => {
   if (isEmpty(queryParams)) return '';
 
-  return `?${Object.keys(queryParams).map((val) => `${val}=${queryParams[val]}`).join('&')}`;
+  return `?${Object.keys(queryParams).filter(val => !isNull(queryParams[val])).map((val) => `${val}=${queryParams[val]}`).join('&')}`;
 };
 
 export const getUser = async (email) => {
@@ -166,8 +166,11 @@ export const submitForm = async (resourceUrl, data, add = true) => {
   return !!error;
 };
 
-export const getTrainingVideos = async ({ limit = null, rating = null }) => {
-  const queryUrl = getQueryParameters({ limit, rating });
+export const getTrainingVideos = async (
+  { limit = null, rating = null, category = null, views = null } = 
+    { limit: null, rating: null, category: null, views: null }
+) => {
+  const queryUrl = getQueryParameters({ limit, rating, category, views });
   const url = `${config.employeeDevelopmentApi}/trainings${queryUrl}`;
   const [error, results] = await to(Axios.get(url));
   if (error) {
@@ -177,12 +180,18 @@ export const getTrainingVideos = async ({ limit = null, rating = null }) => {
   return results.data;
 };
 
-export const getUserTrainingVideos = async () => {
-  // const url = `${config.employeeDevelopmentApi}/`;
-};
+export const updateTrainingViews = async (trainingId) => {
+  const url = `${config.employeeDevelopmentApi}/trainings/${trainingId}/views`;
+  const [error, results] = await to(Axios.put(url));
+  if (error) {
+    throw new Error(`Unable to update training video ${trainingId} views.`);
+  }
 
-export const getEvents = async ({ limit = null, status = null }) => {
-  const queryUrl = getQueryParameters({ limit, status });
+  return results.data;
+}
+
+export const getEvents = async ({ limit = null, status = null } = { limit: null, status: null }) => {
+  const queryUrl = (limit || status) ? getQueryParameters({ limit, status }) : '';
   const url = `${config.employeeDevelopmentApi}/events${queryUrl}`;
   const [error, results] = await to(Axios.get(url));
   if (error) {
@@ -246,6 +255,56 @@ export const updateUserEvent = async (userEvent) => {
   return results.data;
 };
 
+export const getUserTrainings = async (userId) => {
+  const url = `${config.employeeDevelopmentApi}/users/${userId}/trainings`;
+  const [error, results] = await to(Axios.get(url));
+  if (error) {
+    throw new Error(`Unable to get user videos for user: '${userId}'`);
+  }
+
+  return results.data;
+};
+
+export const isUserTrainingExists = async (userId, trainingId) => {
+  const url = `${config.employeeDevelopmentApi}/users/${userId}/trainings/${trainingId}`;
+  const [error, results] = await to(Axios.get(url));
+  if (error) return false;
+
+  return !isEmpty(results.data);
+};
+
+export const createUserTraining = async (userTraining) => {
+  const { userId, trainingId, ...training } = userTraining;
+  const url = `${config.employeeDevelopmentApi}/users/${userId}/trainings/${trainingId}`;
+  const [error, results] = await to(Axios.post(url, training));
+  if (error) {
+    throw new Error(`Unable to create user training for user: '${userId}' and training : '${trainingId}'.`);
+  }
+
+  return results.data;
+};
+
+export const updateUserTraining = async (userTraining) => {
+  const { userId, trainingId, ...training } = userTraining;
+  const url = `${config.employeeDevelopmentApi}/users/${userId}/trainings/${trainingId}`;
+  const [error, results] = await to(Axios.put(url, training));
+  if (error) {
+    throw new Error(`Unable to update user training for user: '${userId}' and video: '${trainingId}'`);
+  }
+
+  return results.data;
+};
+
+export const deleteUserTraining = async (userId, trainingId) => {
+  const url = `${config.employeeDevelopmentApi}/users/${userId}/trainings/${trainingId}`;
+  const [error, results] = await to(Axios.delete(url));
+  if (error) {
+    throw new Error(`Unable to delete user training for user: '${userId}' and video: '${trainingId}'`);
+  }
+
+  return results.data;
+};
+
 export const uploadFiles = async (files) => {
   const UPLOAD_ENDPOINT = `https://api.cloudinary.com/v1_1/${process.env.VUE_APP_CLOUDINARY_CLOUD_NAME}/upload`;
 
@@ -283,11 +342,17 @@ export default {
   deleteCertification,
   submitForm,
   getTrainingVideos,
+  updateTrainingViews,
   getEvents,
   getEvent,
   getUserEvents,
   getUserEvent,
   createUserEvent,
   updateUserEvent,
+  getUserTrainings,
+  isUserTrainingExists,
+  createUserTraining,
+  updateUserTraining,
+  deleteUserTraining,
   uploadFiles,
 };

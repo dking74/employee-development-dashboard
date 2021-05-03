@@ -25,6 +25,10 @@ import EditCertification from '../views/certifications/Edit-Certification.vue';
 import Events from '../views/events/Events.vue';
 import ViewEvent from '../views/events/View-Event.vue';
 
+/** Training routes */
+import Training from '../views/training/Training.vue';
+import SearchTraining from '../views/training/Search-Training.vue';
+
 
 Vue.use(VueRouter);
 
@@ -96,6 +100,18 @@ const routes = [
     path: '/events/view/:eventId',
     name: 'View-Event',
     component: ViewEvent
+  },
+
+  /** Training routes */
+  {
+    path: '/learning',
+    name: 'Training',
+    component: Training
+  },
+  {
+    path: '/learning/search',
+    name: 'Search-Training',
+    component: SearchTraining
   },
 
   {

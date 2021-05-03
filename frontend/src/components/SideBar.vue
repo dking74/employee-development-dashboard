@@ -24,7 +24,7 @@
       </b-nav>
       <div slot="footer" class="my-3 px-5">
         <div class="mb-3 icon">
-          <span>
+          <span v-b-tooltip.hover title="This feature has been disabled for now">
             <font-awesome-icon :icon="accountIcon" class="h1 p-0" />
           </span>
           <h6>{{ accountName }}</h6>

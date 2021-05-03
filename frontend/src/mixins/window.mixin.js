@@ -37,6 +37,9 @@ export default {
     isScreenExtraLarge() {
       return this.screenWidth >= this.extraLargeScreen;
     },
+    isGreaterThanLarge() {
+      return this.screenWidth > this.largeScreen;
+    },
     isGreaterThanMedium() {
       return this.screenWidth > this.mediumScreen;
     },

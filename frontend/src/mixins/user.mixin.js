@@ -99,6 +99,22 @@ export default {
     async updateUserEventStatus(eventId, status) {
       const userEvent = { userId: this.userId, eventId: eventId, status };
       return await agent.updateUserEvent(userEvent);
+    },
+
+    /** UserTraining Status */
+    async getUserTrainings() {
+      return await agent.getUserTrainings(this.userId);
+    },
+    async updateUserTrainingStatus(trainingId, status) {
+      const userTraining = { userId: this.userId, trainingId, status };
+
+      const isUserTrainingExists = await agent.isUserTrainingExists(this.userId, trainingId);
+      return !isUserTrainingExists
+        ? await agent.createUserTraining(userTraining)
+        : await agent.updateUserTraining(userTraining);
+    },
+    async deleteUserTraining(trainingId) {
+      return await agent.deleteUserTraining(this.userId, trainingId);
     }
   }
 }

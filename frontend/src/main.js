@@ -4,6 +4,7 @@ import Vue from 'vue';
 
 import IdleVue from 'idle-vue';
 import { BootstrapVue, IconsPlugin, ToastPlugin } from 'bootstrap-vue';
+import VuePlyr from 'vue-plyr';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
@@ -17,7 +18,10 @@ import { formatDate } from './utils';
 import { domain, clientId } from '../auth_config.json';
 
 import App from './App.vue';
+
+// Css imports
 import './app.scss';
+import 'vue-plyr/dist/vue-plyr.css';
 
 Vue.config.productionTip = false;
 
@@ -25,6 +29,11 @@ Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(ToastPlugin);
+
+// To be able to track video within applicaiton
+Vue.use(VuePlyr, {
+  hideYouTubeDOMError: true
+});
 
 // Use Fontawesome for extra icon
 library.add(faUserSecret)
